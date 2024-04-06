@@ -1,11 +1,10 @@
-package main
+package tsutils
 
 type Result struct {
-	fPath   string
-	results []string
-	err     error
+	FPath   string
+	Results []string
+	Err     error
 }
-
 type FileType uint
 
 const (

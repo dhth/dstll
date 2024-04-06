@@ -1,6 +1,14 @@
-package main
+package tsutils
 
-import "strings"
+import (
+	"errors"
+	"strings"
+)
+
+var (
+	FilePathIncorrectErr = errors.New("file path incorrect")
+	FileNameIncorrectErr = errors.New("file name incorrect")
+)
 
 func getFileExtension(filePath string) (FileType, error) {
 	fPathEls := strings.Split(filePath, ".")
