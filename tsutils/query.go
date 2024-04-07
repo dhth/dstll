@@ -18,9 +18,39 @@ func GetLayout(resultsChan chan<- Result, filePath string) {
 	var elements []string
 	switch ext {
 	case FTScala:
-		elements, err = getScalaData(fContent)
+		objectChan := make(chan Result)
+		classChan := make(chan Result)
+		fnChan := make(chan Result)
+
+		chans := []chan Result{objectChan, classChan, fnChan}
+		go getScalaFunctions(fnChan, fContent)
+		go getScalaClasses(classChan, fContent)
+		go getScalaObjects(objectChan, fContent)
+
+		for _, ch := range chans {
+			r := <-ch
+			if r.Err == nil {
+				for _, elem := range r.Results {
+					elements = append(elements, elem)
+				}
+			}
+		}
 	case FTGo:
-		elements, err = getGoData(fContent)
+		fnChan := make(chan Result)
+		methodChan := make(chan Result)
+		chans := []chan Result{fnChan, methodChan}
+
+		go getGoFuncs(fnChan, fContent)
+		go getGoMethods(methodChan, fContent)
+
+		for _, ch := range chans {
+			r := <-ch
+			if r.Err == nil {
+				for _, elem := range r.Results {
+					elements = append(elements, elem)
+				}
+			}
+		}
 	case FTPython:
 		elements, err = getPyData(fContent)
 	default:

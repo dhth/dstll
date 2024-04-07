@@ -11,7 +11,7 @@ files.
 Languages supported:
 
 - go
-- scala
+- scala2
 - python
 - more to come
 
@@ -39,9 +39,9 @@ TODO
 ---
 
 - go
-    - [ ] Query methods
+    - [x] Query methods
 - scala
-    - [ ] Query Objects
+    - [x] Query Objects
 - python
     - [ ] Query classes
 - [ ] JS
@@ -50,47 +50,46 @@ TODO
 Examples
 ---
 
-Running `layitout` in the [go][1] repo gives the following output:
+Running `layitout` in the [scala][1] repo gives the following output:
 
 ```
-$ git ls-files src/strings/**/*.go | grep -v '_test.go' | head -n 5 | layitout
+$ git ls-files src/compiler/scala/tools/tasty | head -n 3 | layitout
 
+👉 src/compiler/scala/tools/tasty/AttributeUnpickler.scala
 
-👉 src/strings/builder.go
+object AttributeUnpickler
 
-func noescape(p unsafe.Pointer) unsafe.Pointer
-
-................................................................................
-
-👉 src/strings/clone.go
-
-func Clone(s string) string
+def attributes(reader: TastyReader): Attributes
 
 ................................................................................
 
-👉 src/strings/compare.go
+👉 src/compiler/scala/tools/tasty/Attributes.scala
 
-func Compare(a, b string) int
+object Attributes
 
-................................................................................
-
-👉 src/strings/reader.go
-
-func NewReader(s string) *Reader
+private class ConcreteAttributes(val isJava: Boolean) extends Attributes
 
 ................................................................................
 
-👉 src/strings/replace.go
+👉 src/compiler/scala/tools/tasty/ErasedTypeRef.scala
 
-func NewReplacer(oldnew ...string) *Replacer
+object ErasedTypeRef
 
-func makeGenericReplacer(oldnew []string) *genericReplacer
+class ErasedTypeRef(qualifiedName: TypeName, arrayDims: Int)
 
-func getStringWriter(w io.Writer) io.StringWriter
+def signature: String
 
-func makeSingleStringReplacer(pattern string, value string) *singleStringReplacer
+def encode: ErasedTypeRef
+
+def apply(tname: TastyName): ErasedTypeRef
+
+def name(qual: TastyName, tname: SimpleName, isModule: Boolean)
+
+def specialised(qual: TastyName, terminal: String, isModule: Boolean, arrayDims: Int = 0): ErasedTypeRef
 
 ................................................................................
 ```
 
-[1]: https://github.com/golang/go
+More examples can be found [here](./examples).
+
+[1]: https://github.com/scala/scala
