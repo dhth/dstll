@@ -6,7 +6,9 @@
 `layitout` gives you a high level overview of various constructs in your code
 files.
 
-<img src="./layitout.png" alt="layitout" />
+<p align="center">
+  <img src="https://tools.dhruvs.space/images/layitout/layitout.gif" alt="Usage" />
+</p>
 
 Languages supported:
 
@@ -15,10 +17,32 @@ Languages supported:
 - python
 - more to come
 
+Motivation
+---
+
+Sometimes, you want to quickly understand how a project is organized. It could
+be a new repo you're working on or a specific part of a project you're
+unfamiliar with. When given a list of files you're curious about, `layitout`
+shows you a list of signatures representing different constructs found in those
+files, such as classes, functions, objects, etc.
+
+💾 Installation
+---
+
+**go**:
+
+```sh
+go install github.com/dhth/layitout@latest
+```
+
 ⚡️ Usage
 ---
 
-`layitout` accepts a list of file paths from `stdin`.
+`layitout` can be run in both CLI and TUI mode. The former is the default.
+
+### CLI Mode
+
+In CLI mode, `layitout` accepts a list of file paths from `stdin`.
 
 ```bash
 git ls-files | layitout
@@ -35,6 +59,15 @@ dir/file2.py
 EOF
 ```
 
+### TUI Mode
+
+In TUI mode, `layitout` allows you to manually query for constructs with the
+help of a file browser.
+
+```bash
+layitout -mode=tui
+```
+
 TODO
 ---
 
@@ -46,6 +79,22 @@ TODO
     - [ ] Query classes
 - [ ] JS
 - [ ] TS
+
+Screenshots
+---
+
+<p align="center">
+  <img src="https://tools.dhruvs.space/images/layitout/layitout-1.png" alt="Usage" />
+</p>
+
+<p align="center">
+  <img src="https://tools.dhruvs.space/images/layitout/layitout-2.png" alt="Usage" />
+</p>
+
+<p align="center">
+  <img src="https://tools.dhruvs.space/images/layitout/layitout-3.png" alt="Usage" />
+</p>
+
 
 Examples
 ---

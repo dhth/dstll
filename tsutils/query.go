@@ -23,9 +23,9 @@ func GetLayout(resultsChan chan<- Result, filePath string) {
 		fnChan := make(chan Result)
 
 		chans := []chan Result{objectChan, classChan, fnChan}
-		go getScalaFunctions(fnChan, fContent)
-		go getScalaClasses(classChan, fContent)
 		go getScalaObjects(objectChan, fContent)
+		go getScalaClasses(classChan, fContent)
+		go getScalaFunctions(fnChan, fContent)
 
 		for _, ch := range chans {
 			r := <-ch
