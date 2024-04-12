@@ -17,6 +17,7 @@ func die(msg string, args ...any) {
 var (
 	mode       = flag.String("mode", "cli", "mode to operate in; possible values: cli/tui")
 	trimPrefix = flag.String("trim-prefix", "", "prefix to trim from the file path")
+	plain      = flag.Bool("plain", false, "whether to output plain text")
 )
 
 func Execute() {
@@ -37,7 +38,7 @@ func Execute() {
 
 	switch *mode {
 	case "cli":
-		ui.ShowResults(*trimPrefix)
+		ui.ShowResults(*trimPrefix, *plain)
 	case "tui":
 		ui.RenderUI()
 	}

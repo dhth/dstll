@@ -9,7 +9,7 @@ import (
 	"github.com/dhth/layitout/tsutils"
 )
 
-func ShowResults(trimPrefix string) {
+func ShowResults(trimPrefix string, plain bool) {
 
 	var fPaths []string
 
@@ -32,6 +32,15 @@ func ShowResults(trimPrefix string) {
 		}
 	}
 
+	switch plain {
+	case true:
+		printPlainOutput(fPaths, results, trimPrefix)
+	case false:
+		printColorOutput(fPaths, results, trimPrefix)
+	}
+}
+
+func printColorOutput(fPaths []string, results map[string][]string, trimPrefix string) {
 	for _, fPath := range fPaths {
 		v, ok := results[fPath]
 		if !ok {
@@ -53,6 +62,32 @@ func ShowResults(trimPrefix string) {
 			fmt.Println()
 		}
 		fmt.Print(dividerStyle.Render(strings.Repeat(".", 80)))
+		fmt.Print("\n\n")
+	}
+}
+
+func printPlainOutput(fPaths []string, results map[string][]string, trimPrefix string) {
+	for _, fPath := range fPaths {
+		v, ok := results[fPath]
+		if !ok {
+			continue
+		}
+
+		if len(v) == 0 {
+			continue
+		}
+		if trimPrefix != "" {
+			fmt.Println("-> " + strings.TrimPrefix(fPath, trimPrefix))
+		} else {
+			fmt.Println("-> " + fPath)
+		}
+		fmt.Println()
+
+		for _, elem := range v {
+			fmt.Println(elem)
+			fmt.Println()
+		}
+		fmt.Print(strings.Repeat(".", 80))
 		fmt.Print("\n\n")
 	}
 }

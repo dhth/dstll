@@ -47,6 +47,8 @@ In CLI mode, `layitout` accepts a list of file paths from `stdin`.
 ```bash
 git ls-files | layitout
 # or
+git ls-files | layitout -plain=true
+# or
 find . -name '*.go' | layitout
 # or
 fd . --extension=scala | head -n 4 | layitout

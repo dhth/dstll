@@ -3,10 +3,9 @@
 Running `layitout` in the [go][1] repo gives the following output:
 
 ```
-$ git ls-files src/io/**/*.go | grep -v '_test.go' | head -n 3 | layitout
+$ git ls-files src/io/**/*.go | grep -v '_test.go' | head -n 3 | layitout -plain=true
 
-
-👉 src/io/fs/format.go
+-> src/io/fs/format.go
 
 func FormatFileInfo(info FileInfo) string
 
@@ -14,7 +13,7 @@ func FormatDirEntry(dir DirEntry) string
 
 ................................................................................
 
-👉 src/io/fs/fs.go
+-> src/io/fs/fs.go
 
 func ValidPath(name string) bool
 
@@ -46,7 +45,7 @@ func (e *PathError) Timeout() bool
 
 ................................................................................
 
-👉 src/io/fs/glob.go
+-> src/io/fs/glob.go
 
 func Glob(matches []string, err error)
 
