@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/dhth/layitout/tsutils"
+	"github.com/dhth/dstll/tsutils"
 )
 
 func ShowResults(trimPrefix string, plain bool) {

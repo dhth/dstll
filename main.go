@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/dhth/layitout/cmd"
+	"github.com/dhth/dstll/cmd"
 )
 
 func main() {

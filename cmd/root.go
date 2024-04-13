@@ -6,7 +6,7 @@ import (
 
 	"flag"
 
-	"github.com/dhth/layitout/ui"
+	"github.com/dhth/dstll/ui"
 )
 
 func die(msg string, args ...any) {

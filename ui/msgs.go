@@ -1,6 +1,6 @@
 package ui
 
-import "github.com/dhth/layitout/tsutils"
+import "github.com/dhth/dstll/tsutils"
 
 type HideHelpMsg struct{}
 

@@ -1,9 +1,9 @@
-# layitout with go
+# dstll go code
 
-Running `layitout` in the [go][1] repo gives the following output:
+Running `dstll` in the [go][1] repo gives the following output:
 
 ```
-$ git ls-files src/io/**/*.go | grep -v '_test.go' | head -n 3 | layitout -plain=true
+$ git ls-files src/io/**/*.go | grep -v '_test.go' | head -n 3 | dstll -plain=true
 
 -> src/io/fs/format.go
 

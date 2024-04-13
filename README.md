@@ -1,19 +1,19 @@
-# layitout
+# dstll
 
 ✨ Overview
 ---
 
-`layitout` gives you a high level overview of various constructs in your code
-files.
+`dstll` *(short for "distill")* gives you a high level overview of various
+constructs in your code files.
 
 <p align="center">
-  <img src="https://tools.dhruvs.space/images/layitout/layitout.gif" alt="Usage" />
+  <img src="https://tools.dhruvs.space/images/dstll/dstll.gif" alt="Usage" />
 </p>
 
 Languages supported:
 
 - go
-- scala2
+- scala 2
 - python
 - more to come
 
@@ -22,7 +22,7 @@ Motivation
 
 Sometimes, you want to quickly understand how a project is organized. It could
 be a new repo you're working on or a specific part of a project you're
-unfamiliar with. When given a list of files you're curious about, `layitout`
+unfamiliar with. When given a list of files you're curious about, `dstll`
 shows you a list of signatures representing different constructs found in those
 files, such as classes, functions, objects, etc.
 
@@ -32,30 +32,30 @@ files, such as classes, functions, objects, etc.
 **go**:
 
 ```sh
-go install github.com/dhth/layitout@latest
+go install github.com/dhth/dstll@latest
 ```
 
 ⚡️ Usage
 ---
 
-`layitout` can be run in both CLI and TUI mode. The former is the default.
+`dstll` can be run in both CLI and TUI mode. The former is the default.
 
 ### CLI Mode
 
-In CLI mode, `layitout` accepts a list of file paths from `stdin`.
+In CLI mode, `dstll` accepts a list of file paths from `stdin`.
 
 ```bash
-git ls-files | layitout
+git ls-files | dstll
 # or
-git ls-files | layitout -plain=true
+git ls-files | dstll -plain=true
 # or
-find . -name '*.go' | layitout
+find . -name '*.go' | dstll
 # or
-fd . --extension=scala | head -n 4 | layitout
+fd . --extension=scala | head -n 4 | dstll
 # or
-ls -1 | layitout
+ls -1 | dstll
 # or
-cat <<EOF | layitout
+cat <<EOF | dstll
 file1.py
 dir/file2.py
 EOF
@@ -63,11 +63,11 @@ EOF
 
 ### TUI Mode
 
-In TUI mode, `layitout` allows you to manually query for constructs with the
+In TUI mode, `dstll` allows you to manually query for constructs with the
 help of a file browser.
 
 ```bash
-layitout -mode=tui
+dstll -mode=tui
 ```
 
 TODO
@@ -86,25 +86,25 @@ Screenshots
 ---
 
 <p align="center">
-  <img src="https://tools.dhruvs.space/images/layitout/layitout-1.png" alt="Usage" />
+  <img src="https://tools.dhruvs.space/images/dstll/dstll-1.png" alt="Usage" />
 </p>
 
 <p align="center">
-  <img src="https://tools.dhruvs.space/images/layitout/layitout-2.png" alt="Usage" />
+  <img src="https://tools.dhruvs.space/images/dstll/dstll-2.png" alt="Usage" />
 </p>
 
 <p align="center">
-  <img src="https://tools.dhruvs.space/images/layitout/layitout-3.png" alt="Usage" />
+  <img src="https://tools.dhruvs.space/images/dstll/dstll-3.png" alt="Usage" />
 </p>
 
 
 Examples
 ---
 
-Running `layitout` in the [scala][1] repo gives the following output:
+Running `dstll` in the [scala][1] repo gives the following output:
 
 ```
-$ git ls-files src/compiler/scala/tools/tasty | head -n 3 | layitout
+$ git ls-files src/compiler/scala/tools/tasty | head -n 3 | dstll
 
 👉 src/compiler/scala/tools/tasty/AttributeUnpickler.scala
 

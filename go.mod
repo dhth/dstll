@@ -1,4 +1,4 @@
-module github.com/dhth/layitout
+module github.com/dhth/dstll
 
 go 1.22.1
 

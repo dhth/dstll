@@ -3,8 +3,8 @@ package ui
 import (
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/dhth/layitout/filepicker"
-	"github.com/dhth/layitout/tsutils"
+	"github.com/dhth/dstll/filepicker"
+	"github.com/dhth/dstll/tsutils"
 )
 
 type Pane uint

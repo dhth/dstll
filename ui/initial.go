@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/charmbracelet/lipgloss"
-	"github.com/dhth/layitout/filepicker"
-	"github.com/dhth/layitout/tsutils"
+	"github.com/dhth/dstll/filepicker"
+	"github.com/dhth/dstll/tsutils"
 )
 
 func InitialModel() model {
@@ -13,7 +13,7 @@ func InitialModel() model {
 	fp := filepicker.New()
 	supportedFT := []string{".go", ".scala", ".py"}
 
-	unsupportedFTMsg := "layitout will show constructs for the following file types:\n"
+	unsupportedFTMsg := "dstll will show constructs for the following file types:\n"
 	for _, ft := range supportedFT {
 		unsupportedFTMsg += fmt.Sprintf("%s\n", ft)
 	}

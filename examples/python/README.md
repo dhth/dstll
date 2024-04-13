@@ -1,9 +1,9 @@
-# layitout with python
+# dstll python code
 
-Running `layitout` in the [flask][1] repo gives the following output:
+Running `dstll` in the [flask][1] repo gives the following output:
 
 ```
-$ git ls-files src/flask/**/*.py | grep -v '__init__.py' | head -n 3 | layitout -plain=true
+$ git ls-files src/flask/**/*.py | grep -v '__init__.py' | head -n 3 | dstll -plain=true
 
 -> src/flask/app.py
 

@@ -46,7 +46,7 @@ func (m model) View() string {
 	}
 
 	footerStr := fmt.Sprintf("%s%s",
-		modeStyle.Render("layitout"),
+		modeStyle.Render("dstll"),
 		helpMsg,
 	)
 	footer = footerStyle.Render(footerStr)

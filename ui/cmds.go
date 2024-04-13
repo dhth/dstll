@@ -4,7 +4,7 @@ import (
 	"os"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/dhth/layitout/tsutils"
+	"github.com/dhth/dstll/tsutils"
 )
 
 func chooseFile(filePath string) tea.Cmd {
