@@ -1,6 +1,9 @@
 package ui
 
 import (
+	"bytes"
+
+	"github.com/alecthomas/chroma/quick"
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 )
@@ -48,17 +51,23 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if msg.result.Err != nil {
 			m.message = msg.result.Err.Error()
 		} else {
-			m.resultsCache[msg.result.FPath] = msg.result
-
 			if len(msg.result.Results) == 0 {
 				m.resultVP.SetContent(m.noConstructsMsg)
+				m.resultsCache[msg.result.FPath] = m.noConstructsMsg
 			} else {
 				s := "👉 " + msg.result.FPath + "\n\n"
 				for _, elem := range msg.result.Results {
-					s += tsElementStyle.Render(elem)
+					var b bytes.Buffer
+					err := quick.Highlight(&b, elem, msg.result.FPath, "terminal16m", "doom-one")
+					if err != nil {
+						s += tsElementStyle.Render(elem)
+					} else {
+						s += b.String()
+					}
 					s += "\n\n"
 				}
 				m.resultVP.SetContent(s)
+				m.resultsCache[msg.result.FPath] = s
 			}
 		}
 	}
@@ -74,20 +83,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if !ok {
 				cmds = append(cmds, getFileResults(m.filepicker.Current))
 			} else {
-				if resultFromCache.Err != nil {
-					m.message = resultFromCache.Err.Error()
-				} else {
-					s := "👉 " + filePathStyle.Render(m.filepicker.Current) + "\n\n"
-					if len(resultFromCache.Results) == 0 {
-						m.resultVP.SetContent(s + noConstructsStyle.Render(m.noConstructsMsg))
-					} else {
-						for _, elem := range resultFromCache.Results {
-							s += tsElementStyle.Render(elem)
-							s += "\n\n"
-						}
-						m.resultVP.SetContent(s)
-					}
-				}
+				m.resultVP.SetContent(resultFromCache)
 			}
 		} else {
 			m.resultVP.SetContent(unsupportedFileStyle.Render(m.unsupportedFileMsg))

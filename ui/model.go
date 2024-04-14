@@ -4,7 +4,6 @@ import (
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/dhth/dstll/filepicker"
-	"github.com/dhth/dstll/tsutils"
 )
 
 type Pane uint
@@ -17,7 +16,7 @@ const (
 type model struct {
 	resultVP              viewport.Model
 	resultVPReady         bool
-	resultsCache          map[string]tsutils.Result
+	resultsCache          map[string]string
 	filepicker            filepicker.Model
 	selectedFile          string
 	quitting              bool

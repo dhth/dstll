@@ -5,7 +5,6 @@ import (
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/dhth/dstll/filepicker"
-	"github.com/dhth/dstll/tsutils"
 )
 
 func InitialModel() model {
@@ -30,7 +29,7 @@ func InitialModel() model {
 
 	m := model{
 		filepicker:            fp,
-		resultsCache:          make(map[string]tsutils.Result),
+		resultsCache:          make(map[string]string),
 		noConstructsMsg:       "No constructs found",
 		supportedFileTypes:    supportedFT,
 		unsupportedFileMsg:    unsupportedFTMsg,

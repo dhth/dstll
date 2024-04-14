@@ -5,18 +5,20 @@ import (
 )
 
 const (
-	ActiveHeaderColor      = "#fe8019"
-	ResultsHeaderColor     = "#b8bb26"
-	InactivePaneColor      = "#928374"
-	DisabledFileColor      = "#928374"
-	DirectoryColor         = "#83a598"
+	ActiveHeaderColor      = "#fd7474"
+	InactivePaneColor      = "#c1abea"
+	DisabledFileColor      = "#8a93a5"
+	DirectoryColor         = "#76a9f9"
 	NoConstructsColor      = "#fabd2f"
 	UnsupportedFileColor   = "#928374"
-	CWDColor               = "#928374"
-	FilepathColor          = "#8ec07c"
-	TSElementColor         = "#d3869b"
+	CWDColor               = "#c1abea"
+	FilepathColor          = "#fd7474"
+	TSElementColor         = "#76a9f9"
 	DividerColor           = "#665c54"
 	DefaultForegroundColor = "#282828"
+	ModeColor              = "#76a9f9"
+	HelpMsgColor           = "#83a598"
+	FooterColor            = "#7c6f64"
 )
 
 var (
@@ -59,9 +61,9 @@ var (
 	modeStyle = baseStyle.Copy().
 			Align(lipgloss.Center).
 			Bold(true).
-			Background(lipgloss.Color("#b8bb26"))
+			Background(lipgloss.Color(ModeColor))
 
 	helpMsgStyle = baseStyle.Copy().
 			Bold(true).
-			Foreground(lipgloss.Color("#83a598"))
+			Foreground(lipgloss.Color(HelpMsgColor))
 )
