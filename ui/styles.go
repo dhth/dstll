@@ -5,18 +5,19 @@ import (
 )
 
 const (
-	ActiveHeaderColor      = "#fd7474"
-	InactivePaneColor      = "#c1abea"
-	DisabledFileColor      = "#8a93a5"
-	DirectoryColor         = "#76a9f9"
+	ActiveHeaderColor      = "#fc5fa3"
+	InactivePaneColor      = "#d0a8ff"
+	DisabledFileColor      = "#6c7986"
+	DirectoryColor         = "#41a1c0"
 	NoConstructsColor      = "#fabd2f"
 	UnsupportedFileColor   = "#928374"
-	CWDColor               = "#c1abea"
-	FilepathColor          = "#fd7474"
-	TSElementColor         = "#76a9f9"
-	DividerColor           = "#665c54"
+	CWDColor               = "#d0a8ff"
+	FilepathColor          = "#fc5fa3"
+	FilepathColorTUI       = "#d0a8ff"
+	TSElementColor         = "#41a1c0"
+	DividerColor           = "#6c7986"
 	DefaultForegroundColor = "#282828"
-	ModeColor              = "#76a9f9"
+	ModeColor              = "#fc5fa3"
 	HelpMsgColor           = "#83a598"
 	FooterColor            = "#7c6f64"
 )
@@ -25,11 +26,15 @@ var (
 	filePathStyle = lipgloss.NewStyle().
 			Foreground(lipgloss.Color(FilepathColor))
 
+	filePathStyleTUI = lipgloss.NewStyle().
+				Foreground(lipgloss.Color(FilepathColorTUI))
+
 	tsElementStyle = lipgloss.NewStyle().
 			Foreground(lipgloss.Color(TSElementColor))
 
 	dividerStyle = lipgloss.NewStyle().
 			Foreground(lipgloss.Color(DividerColor))
+
 	baseStyle = lipgloss.NewStyle().
 			PaddingLeft(1).
 			PaddingRight(1).

@@ -55,10 +55,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.resultVP.SetContent(m.noConstructsMsg)
 				m.resultsCache[msg.result.FPath] = m.noConstructsMsg
 			} else {
-				s := "👉 " + msg.result.FPath + "\n\n"
+				s := "👉 " + filePathStyleTUI.Render(msg.result.FPath) + "\n\n"
 				for _, elem := range msg.result.Results {
 					var b bytes.Buffer
-					err := quick.Highlight(&b, elem, msg.result.FPath, "terminal16m", "doom-one")
+					err := quick.Highlight(&b, elem, msg.result.FPath, "terminal16m", "xcode-dark")
 					if err != nil {
 						s += tsElementStyle.Render(elem)
 					} else {
