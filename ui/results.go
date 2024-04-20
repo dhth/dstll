@@ -1,22 +1,12 @@
 package ui
 
 import (
-	"bufio"
 	"fmt"
-	"os"
-	"strings"
-
 	"github.com/dhth/dstll/tsutils"
+	"strings"
 )
 
-func ShowResults(trimPrefix string, plain bool) {
-
-	var fPaths []string
-
-	scanner := bufio.NewScanner(os.Stdin)
-	for scanner.Scan() {
-		fPaths = append(fPaths, scanner.Text())
-	}
+func ShowResults(fPaths []string, trimPrefix string, plain bool) {
 
 	resultsChan := make(chan tsutils.Result)
 	results := make(map[string][]string)

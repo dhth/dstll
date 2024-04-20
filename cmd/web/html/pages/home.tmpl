@@ -1,0 +1,15 @@
+{{define "title"}}Home{{end}}
+{{define "main"}}
+    <div class="divide-y-2 divide-[{{$.FilepathColor}}]/[.05]">
+        {{range $fPath,$elements := .Results -}}
+        <div class="container py-12 overflow-x-auto">
+            <p class="text-[{{ $.FilepathColor }}] pb-8 text-xl">{{ $fPath }}</p>
+            {{range $elements -}}
+            <div class="container">
+                {{ . }}
+            </div>
+            {{end}}
+        </div>
+        {{end}}
+    </div>
+{{end}}

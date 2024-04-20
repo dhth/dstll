@@ -20,6 +20,7 @@ const (
 	ModeColor              = "#fc5fa3"
 	HelpMsgColor           = "#83a598"
 	FooterColor            = "#7c6f64"
+	HTMLBackgroundColor    = "#1f1f24"
 )
 
 var (

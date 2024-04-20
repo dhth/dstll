@@ -61,6 +61,10 @@ dir/file2.py
 EOF
 ```
 
+<p align="center">
+  <img src="https://tools.dhruvs.space/images/dstll/dstll-1.png" alt="Usage" />
+</p>
+
 ### TUI Mode
 
 In TUI mode, `dstll` allows you to manually query for constructs with the
@@ -69,6 +73,27 @@ help of a file browser.
 ```bash
 dstll -mode=tui
 ```
+
+<p align="center">
+  <img src="https://tools.dhruvs.space/images/dstll/dstll-2.png" alt="Usage" />
+</p>
+
+<p align="center">
+  <img src="https://tools.dhruvs.space/images/dstll/dstll-3.png" alt="Usage" />
+</p>
+
+### Server Mode
+
+`dstll` can present its findings via a web server which serves HTML output.
+
+```bash
+git ls-files | dstll -mode=server
+```
+
+<p align="center">
+  <img src="https://tools.dhruvs.space/images/dstll/dstll-4.png" alt="Usage" />
+</p>
+
 
 TODO
 ---
@@ -81,22 +106,6 @@ TODO
     - [ ] Query classes
 - [ ] JS
 - [ ] TS
-
-Screenshots
----
-
-<p align="center">
-  <img src="https://tools.dhruvs.space/images/dstll/dstll-1.png" alt="Usage" />
-</p>
-
-<p align="center">
-  <img src="https://tools.dhruvs.space/images/dstll/dstll-2.png" alt="Usage" />
-</p>
-
-<p align="center">
-  <img src="https://tools.dhruvs.space/images/dstll/dstll-3.png" alt="Usage" />
-</p>
-
 
 Examples
 ---

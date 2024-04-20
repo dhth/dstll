@@ -1,0 +1,22 @@
+{{define "base"}}
+<!doctype html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <title>dstll</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="bg-[{{ $.BackgroundColor }}] py-10">
+        <div class="flex justify-center">
+            <div class="w-full md:w-2/3 lg:w-2/3 px-4">
+                <header>
+                    <h1 class="text-[{{ $.HeaderColor }}] text-4xl mb-4 font-bold">dstll</h1>
+                </header>
+                <main>
+                    {{template "main" .}}
+                </main>
+            </div>
+        </div>
+    </body>
+</html>
+{{end}}
