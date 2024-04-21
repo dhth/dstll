@@ -1,0 +1,12 @@
+{{ define "nav" }}
+ <nav class="py-4">
+    {{ range $i, $page := .Pages -}}
+    {{ if eq $page $.CurrentPage }}
+    <a href='/page/{{ $page }}' class="pr-4 text-xl text-bold text-[{{ $.ActivePageColor }}]">{{ $page }}</a>
+    {{ else }}
+    <a href='/page/{{ $page }}' class="pr-4 text-xl text-bold text-[{{ $.NavigationColor }}]">{{ $page }}</a>
+    {{ end }}
+    {{ end }}
+</nav>
+{{ end }}
+

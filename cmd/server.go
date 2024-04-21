@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"strings"
 	"syscall"
 	"text/template"
@@ -26,13 +27,15 @@ const (
 	startPort               = 8100
 	endPort                 = 8500
 	minResultsForLoadingBar = 400
+	resultsPerPage          = 10
 )
 
 const (
 	backgroundColor = "#1f1f24"
-	HeaderColor     = "#41a1c0"
 	filepathColor   = "#ffd166"
-	headerColor     = "#41a1c0"
+	headerColor     = "#f15bb5"
+	navigationColor = "#00bbf9"
+	activePageColor = "#f15bb5"
 )
 
 var (
@@ -42,44 +45,90 @@ var (
 //go:embed web
 var tplFolder embed.FS
 
-type htmlResults struct {
+type htmlData struct {
 	Results         map[string][]htemplate.HTML
+	Pages           []int
+	CurrentPage     int
+	NumFiles        int
 	BackgroundColor string
 	HeaderColor     string
 	FilepathColor   string
+	NavigationColor string
+	ActivePageColor string
 }
 
-func (res htmlResults) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Server", "Go")
+func serveResults(files []string) func(w http.ResponseWriter, r *http.Request) {
 
-	files := []string{
-		"web/html/base.tmpl",
-		"web/html/pages/home.tmpl",
-	}
+	return func(w http.ResponseWriter, r *http.Request) {
+		page := r.PathValue("page")
+		pageNum := 1
+		var err error
 
-	ts, err := template.ParseFS(tplFolder, files...)
-	if err != nil {
-		log.Printf("Error getting template: %v", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
+		if page != "" {
+			pageNum, err = strconv.Atoi(page)
+			if err != nil {
+				log.Printf("Got bad page: %v", page)
+				http.Error(w, "Bad page", http.StatusBadRequest)
+				return
+			}
+		}
 
-	err = ts.ExecuteTemplate(w, "base", res)
-	if err != nil {
-		log.Printf("Error executing template: %v", err)
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
+		startIndex, endIndex, err := utils.GetIndexRange(pageNum, len(files), resultsPerPage)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Bad page: %q", err), http.StatusBadRequest)
+			return
+		}
+
+		results := getResults(files[startIndex:endIndex])
+		numPages := len(files) / resultsPerPage
+
+		if len(files)%resultsPerPage != 0 {
+			numPages++
+		}
+
+		pages := make([]int, numPages)
+
+		for i := range numPages {
+			pages[i] = i + 1
+		}
+
+		res1 := htmlData{
+			Results:         results,
+			Pages:           pages,
+			CurrentPage:     pageNum,
+			NumFiles:        len(files),
+			BackgroundColor: backgroundColor,
+			HeaderColor:     headerColor,
+			FilepathColor:   filepathColor,
+			NavigationColor: navigationColor,
+			ActivePageColor: activePageColor,
+		}
+
+		w.Header().Add("Server", "Go")
+
+		files := []string{
+			"web/html/base.tmpl",
+			"web/html/partials/nav.tmpl",
+			"web/html/pages/home.tmpl",
+		}
+
+		ts, err := template.ParseFS(tplFolder, files...)
+		if err != nil {
+			log.Printf("Error getting template: %v", err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+
+		err = ts.ExecuteTemplate(w, "base", res1)
+		if err != nil {
+			log.Printf("Error executing template: %v", err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
 func getResults(fPaths []string) map[string][]htemplate.HTML {
-
-	var done chan struct{}
-
-	if len(fPaths) > minResultsForLoadingBar {
-		done = make(chan struct{})
-		go utils.Loader(time.Millisecond*200, done)
-	}
 
 	resultsChan := make(chan tsutils.Result)
 	results := make(map[string][]htemplate.HTML)
@@ -91,9 +140,6 @@ func getResults(fPaths []string) map[string][]htemplate.HTML {
 	for range fPaths {
 		r := <-resultsChan
 		if r.Err != nil {
-			continue
-		}
-		if len(r.Results) == 0 {
 			continue
 		}
 
@@ -111,29 +157,15 @@ func getResults(fPaths []string) map[string][]htemplate.HTML {
 		results[r.FPath] = htmlResults
 	}
 
-	if len(fPaths) > minResultsForLoadingBar {
-		done <- struct{}{}
-	}
 	return results
 }
 
 func startServer(fPaths []string) {
-	results := getResults(fPaths)
-
-	res := htmlResults{
-		Results:         results,
-		BackgroundColor: backgroundColor,
-		HeaderColor:     headerColor,
-		FilepathColor:   filepathColor,
-	}
-
-	if len(res.Results) == 0 {
-		return
-	}
 
 	mux := http.NewServeMux()
 
-	mux.Handle("GET /{$}", res)
+	mux.HandleFunc("GET /{$}", serveResults(fPaths))
+	mux.HandleFunc("GET /page/{page}", serveResults(fPaths))
 
 	port, err := findOpenPort(startPort, endPort)
 

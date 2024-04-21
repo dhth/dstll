@@ -1,5 +1,8 @@
 {{define "title"}}Home{{end}}
 {{define "main"}}
+    <div class="text-italic pt-4 text-[{{ .NavigationColor }}]">
+        <p>Displaying a total of <span class="text-[{{ .FilepathColor }}]">{{ .NumFiles }}</span> files.</p>
+    </div>
     <div class="divide-y-2 divide-[{{$.FilepathColor}}]/[.05]">
         {{range $fPath,$elements := .Results -}}
         <div class="container py-12 overflow-x-auto">
