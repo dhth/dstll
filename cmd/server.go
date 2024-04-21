@@ -18,12 +18,14 @@ import (
 	"time"
 
 	"github.com/alecthomas/chroma/quick"
+	"github.com/dhth/dstll/internal/utils"
 	"github.com/dhth/dstll/tsutils"
 )
 
 const (
-	startPort = 8100
-	endPort   = 8500
+	startPort               = 8100
+	endPort                 = 8500
+	minResultsForLoadingBar = 400
 )
 
 const (
@@ -70,24 +72,14 @@ func (res htmlResults) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func spinner(delay time.Duration, done <-chan struct{}) {
-	for {
-		select {
-		case <-done:
-			fmt.Print("\r")
-			return
-		default:
-			for _, r := range `-\|/` {
-				fmt.Printf("\rfetching results %c", r)
-				time.Sleep(delay)
-			}
-		}
-	}
-}
-
 func getResults(fPaths []string) map[string][]htemplate.HTML {
-	done := make(chan struct{})
-	go spinner(time.Millisecond*100, done)
+
+	var done chan struct{}
+
+	if len(fPaths) > minResultsForLoadingBar {
+		done = make(chan struct{})
+		go utils.Loader(time.Millisecond*200, done)
+	}
 
 	resultsChan := make(chan tsutils.Result)
 	results := make(map[string][]htemplate.HTML)
@@ -118,7 +110,10 @@ func getResults(fPaths []string) map[string][]htemplate.HTML {
 		}
 		results[r.FPath] = htmlResults
 	}
-	done <- struct{}{}
+
+	if len(fPaths) > minResultsForLoadingBar {
+		done <- struct{}{}
+	}
 	return results
 }
 

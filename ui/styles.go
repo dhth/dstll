@@ -13,7 +13,7 @@ const (
 	UnsupportedFileColor   = "#928374"
 	CWDColor               = "#d0a8ff"
 	FilepathColor          = "#fc5fa3"
-	FilepathColorTUI       = "#d0a8ff"
+	FilepathColorTUI       = "#ffd166"
 	TSElementColor         = "#41a1c0"
 	DividerColor           = "#6c7986"
 	DefaultForegroundColor = "#282828"
