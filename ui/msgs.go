@@ -2,7 +2,7 @@ package ui
 
 import "github.com/dhth/dstll/tsutils"
 
-type HideHelpMsg struct{}
+type hideHelpMsg struct{}
 
 type FileRead struct {
 	contents string
@@ -11,4 +11,9 @@ type FileRead struct {
 
 type FileResultsReceivedMsg struct {
 	result tsutils.Result
+}
+
+type ViewFileFinishedmsg struct {
+	filePath string
+	err      error
 }

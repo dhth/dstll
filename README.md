@@ -35,6 +35,19 @@ files, such as classes, functions, objects, etc.
 go install github.com/dhth/dstll@latest
 ```
 
+🛠️ Configuration
+---
+
+Create a configuration file that looks like the following. By default,
+`dstll` will look for this file at `~/.config/dstll.yml`.
+
+```toml
+[tui]
+view_file_command = ["your", "command"]
+# for example, ["bat", "--style", "plain", "--paging", "always"]
+# will run 'bat --style plain --paging always <file-path>'
+```
+
 ⚡️ Usage
 ---
 

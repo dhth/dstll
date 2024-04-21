@@ -27,6 +27,16 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.activePane = fileExplorerPane
 				m.resultVP.GotoTop()
 			}
+		case "o":
+			if m.config.ViewFileCmd != nil {
+				if m.activePane == fileExplorerPane {
+					if m.filepicker.IsCurrentAFile {
+						cmds = append(cmds, openFile(m.filepicker.Current, *m.config.ViewFileCmd))
+					}
+				}
+			} else {
+				m.message = "you haven't configured view_file_command, run dstll -help to learn more"
+			}
 		}
 	case tea.WindowSizeMsg:
 		m.terminalWidth = msg.Width
@@ -41,6 +51,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.resultVP.Width = msg.Width - m.fileExplorerPaneWidth - 10
 			m.resultVP.Height = msg.Height - 8
 		}
+	case hideHelpMsg:
+		m.showHelp = false
 	case FileRead:
 		if msg.err != nil {
 			m.message = msg.err.Error()

@@ -139,8 +139,9 @@ type Model struct {
 	id int
 
 	// Path is the path which the user has selected with the file picker.
-	Path    string
-	Current string
+	Path           string
+	Current        string
+	IsCurrentAFile bool
 
 	// CurrentDirectory is the directory that the user is currently in.
 	CurrentDirectory string
@@ -242,6 +243,7 @@ func (m Model) Init() tea.Cmd {
 
 func (m *Model) setCurrent() {
 	f := m.files[m.selected]
+	m.IsCurrentAFile = !f.IsDir()
 	m.Current = filepath.Join(m.CurrentDirectory, f.Name())
 }
 

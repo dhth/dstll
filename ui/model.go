@@ -1,6 +1,8 @@
 package ui
 
 import (
+	"time"
+
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/dhth/dstll/filepicker"
@@ -14,6 +16,7 @@ const (
 )
 
 type model struct {
+	config                Config
 	resultVP              viewport.Model
 	resultVPReady         bool
 	resultsCache          map[string]string
@@ -34,5 +37,8 @@ type model struct {
 }
 
 func (m model) Init() tea.Cmd {
-	return m.filepicker.Init()
+	return tea.Batch(
+		hideHelp(time.Minute*1),
+		m.filepicker.Init(),
+	)
 }
