@@ -36,10 +36,12 @@ func GetLayout(resultsChan chan<- Result, filePath string) {
 			}
 		}
 	case FTGo:
+		typeChan := make(chan Result)
 		fnChan := make(chan Result)
 		methodChan := make(chan Result)
-		chans := []chan Result{fnChan, methodChan}
+		chans := []chan Result{typeChan, fnChan, methodChan}
 
+		go getGoTypes(typeChan, fContent)
 		go getGoFuncs(fnChan, fContent)
 		go getGoMethods(methodChan, fContent)
 

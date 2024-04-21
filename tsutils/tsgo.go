@@ -68,7 +68,49 @@ func getGoFuncs(resultChan chan<- Result, fContent []byte) {
 		elements = append(elements, elem)
 	}
 	resultChan <- Result{Results: elements}
+}
 
+func getGoTypes(resultChan chan<- Result, fContent []byte) {
+	parser := ts.NewParser()
+	parser.SetLanguage(tsgo.GetLanguage())
+
+	tree, err := parser.ParseCtx(context.Background(), nil, fContent)
+	if err != nil {
+		resultChan <- Result{Err: err}
+		return
+	}
+
+	rootNode := tree.RootNode()
+
+	q, err := ts.NewQuery([]byte(`
+(type_declaration) @type-dec
+`), tsgo.GetLanguage())
+
+	if err != nil {
+		resultChan <- Result{Err: err}
+		return
+	}
+
+	qc := ts.NewQueryCursor()
+
+	qc.Exec(q, rootNode)
+
+	var elements []string
+
+	var typeDec string
+	for {
+		tMatch, cOk := qc.NextMatch()
+		if !cOk {
+			break
+		}
+		if len(tMatch.Captures) != 1 {
+			continue
+		}
+		typeDec = tMatch.Captures[0].Node.Content(fContent)
+
+		elements = append(elements, typeDec)
+	}
+	resultChan <- Result{Results: elements}
 }
 
 func getGoMethods(resultChan chan<- Result, fContent []byte) {

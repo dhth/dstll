@@ -57,6 +57,66 @@ func saySomething(name string) string {
 			}
 		})
 	}
+}
+
+func TestGetGoTypes(t *testing.T) {
+	cases := []struct {
+		name            string
+		fileContents    []byte
+		expectedResults []string
+		err             error
+	}{
+		// SUCCESSES
+		{
+			name: "a simple type",
+			fileContents: []byte(`
+type MyInt int
+`),
+			expectedResults: []string{"type MyInt int"},
+		},
+		{
+			name: "a struct",
+			fileContents: []byte(`
+type Person struct {
+    Name string
+    Age  int
+}
+`),
+			expectedResults: []string{`type Person struct {
+    Name string
+    Age  int
+}`},
+		},
+		{
+			name: "an interface",
+			fileContents: []byte(`
+type Shape interface {
+    Area() float64
+    Perimeter() float64
+}
+`),
+			expectedResults: []string{`type Shape interface {
+    Area() float64
+    Perimeter() float64
+}`},
+		},
+	}
+
+	for _, tt := range cases {
+		t.Run(tt.name, func(t *testing.T) {
+			resultChan := make(chan Result)
+			go getGoTypes(resultChan, tt.fileContents)
+
+			got := <-resultChan
+
+			if !reflect.DeepEqual(got.Results, tt.expectedResults) {
+				t.Errorf("got: %#v, expected: %#v", got.Results, tt.expectedResults)
+			}
+			if got.Err != tt.err {
+				t.Errorf("error mismatch; got: %v, expected: %v", got.Err, tt.err)
+			}
+		})
+	}
 
 }
 
