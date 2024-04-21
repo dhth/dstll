@@ -1,4 +1,4 @@
-package cmd
+package server
 
 import (
 	"bytes"
@@ -42,7 +42,7 @@ var (
 	noPortOpenErr = errors.New("No open port found")
 )
 
-//go:embed web
+//go:embed html
 var tplFolder embed.FS
 
 type htmlData struct {
@@ -107,9 +107,9 @@ func serveResults(files []string) func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Server", "Go")
 
 		files := []string{
-			"web/html/base.tmpl",
-			"web/html/partials/nav.tmpl",
-			"web/html/pages/home.tmpl",
+			"html/base.tmpl",
+			"html/partials/nav.tmpl",
+			"html/pages/home.tmpl",
 		}
 
 		ts, err := template.ParseFS(tplFolder, files...)
@@ -160,7 +160,7 @@ func getResults(fPaths []string) map[string][]htemplate.HTML {
 	return results
 }
 
-func startServer(fPaths []string) {
+func Start(fPaths []string) {
 
 	mux := http.NewServeMux()
 

@@ -53,7 +53,7 @@ func (m model) View() string {
 
 	var helpMsg string
 	if m.showHelp {
-		helpMsg = " " + helpMsgStyle.Render("<tab>: switch focus between panes; o: open file")
+		helpMsg = " " + helpMsgStyle.Render("<tab>: switch focus between panes; v/space: view file")
 	}
 
 	footerStr := fmt.Sprintf("%s%s",

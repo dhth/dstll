@@ -27,7 +27,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.activePane = fileExplorerPane
 				m.resultVP.GotoTop()
 			}
-		case "o":
+		case "v", " ":
 			if m.config.ViewFileCmd != nil {
 				if m.activePane == fileExplorerPane {
 					if m.filepicker.IsCurrentAFile {

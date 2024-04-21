@@ -39,7 +39,7 @@ go install github.com/dhth/dstll@latest
 ---
 
 Create a configuration file that looks like the following. By default,
-`dstll` will look for this file at `~/.config/dstll.yml`.
+`dstll` will look for this file at `~/.config/dstll/dstll.yml`.
 
 ```toml
 [tui]

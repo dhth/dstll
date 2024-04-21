@@ -9,6 +9,7 @@ import (
 
 	"flag"
 
+	server "github.com/dhth/dstll/server"
 	"github.com/dhth/dstll/ui"
 )
 
@@ -105,7 +106,7 @@ func Execute() {
 	case "cli":
 		ui.ShowResults(fPaths, *trimPrefix, *plain)
 	case "server":
-		startServer(fPaths)
+		server.Start(fPaths)
 	case "tui":
 		config := ui.Config{
 			ViewFileCmd: cfg.TUICfg.ViewFileCmd,
