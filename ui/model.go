@@ -23,9 +23,7 @@ type model struct {
 	filepicker            filepicker.Model
 	selectedFile          string
 	quitting              bool
-	err                   error
 	activePane            Pane
-	lastPane              Pane
 	terminalHeight        int
 	terminalWidth         int
 	message               string

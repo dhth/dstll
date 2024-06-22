@@ -56,7 +56,7 @@ func Execute() {
 		die("trim-prefix can only be used in CLI mode")
 	}
 
-	if *plain == true && *mode != "cli" {
+	if *plain && *mode != "cli" {
 		die("plain can be true only in CLI mode")
 	}
 	var defaultConfigPathUsed bool

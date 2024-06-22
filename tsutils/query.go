@@ -30,9 +30,7 @@ func GetLayout(resultsChan chan<- Result, filePath string) {
 		for _, ch := range chans {
 			r := <-ch
 			if r.Err == nil {
-				for _, elem := range r.Results {
-					elements = append(elements, elem)
-				}
+				elements = append(elements, r.Results...)
 			}
 		}
 	case FTGo:
@@ -48,9 +46,7 @@ func GetLayout(resultsChan chan<- Result, filePath string) {
 		for _, ch := range chans {
 			r := <-ch
 			if r.Err == nil {
-				for _, elem := range r.Results {
-					elements = append(elements, elem)
-				}
+				elements = append(elements, r.Results...)
 			}
 		}
 	case FTPython:

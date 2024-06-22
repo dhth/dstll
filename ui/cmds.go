@@ -1,23 +1,12 @@
 package ui
 
 import (
-	"os"
 	"os/exec"
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/dhth/dstll/tsutils"
 )
-
-func chooseFile(filePath string) tea.Cmd {
-	return func() tea.Msg {
-		fContent, err := os.ReadFile(filePath)
-		if err != nil {
-			return FileRead{err: err}
-		}
-		return FileRead{contents: string(fContent)}
-	}
-}
 
 func openFile(filePath string, cmd []string) tea.Cmd {
 	openCmd := append(cmd, filePath)

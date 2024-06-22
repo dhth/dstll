@@ -22,10 +22,10 @@ func InitialModel(config Config) model {
 	fp.AllowedTypes = supportedFT
 	fp.AutoHeight = false
 	fp.Width = fpWidth
-	fp.Styles.Selected.Foreground(lipgloss.Color(ActiveHeaderColor))
-	fp.Styles.Cursor.Foreground(lipgloss.Color(ActiveHeaderColor))
-	fp.Styles.DisabledFile.Foreground(lipgloss.Color(DisabledFileColor))
-	fp.Styles.Directory.Foreground(lipgloss.Color(DirectoryColor))
+	fp.Styles.Selected = fp.Styles.Selected.Foreground(lipgloss.Color(ActiveHeaderColor))
+	fp.Styles.Cursor = fp.Styles.Cursor.Foreground(lipgloss.Color(ActiveHeaderColor))
+	fp.Styles.DisabledFile = fp.Styles.DisabledFile.Foreground(lipgloss.Color(DisabledFileColor))
+	fp.Styles.Directory = fp.Styles.Directory.Foreground(lipgloss.Color(DirectoryColor))
 
 	m := model{
 		config:                config,

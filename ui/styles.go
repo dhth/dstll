@@ -46,30 +46,27 @@ var (
 				PaddingRight(2).
 				PaddingBottom(1)
 
-	activePaneHeaderStyle = baseStyle.Copy().
+	activePaneHeaderStyle = baseStyle.
 				Align(lipgloss.Left).
 				Bold(true).
 				Background(lipgloss.Color(ActiveHeaderColor))
 
-	inActivePaneHeaderStyle = activePaneHeaderStyle.Copy().
+	inActivePaneHeaderStyle = activePaneHeaderStyle.
 				Background(lipgloss.Color(InactivePaneColor))
 
 	unsupportedFileStyle = lipgloss.NewStyle().
 				Foreground(lipgloss.Color(UnsupportedFileColor))
 
-	noConstructsStyle = lipgloss.NewStyle().
-				Foreground(lipgloss.Color(NoConstructsColor))
-
-	cwdStyle = baseStyle.Copy().
+	cwdStyle = baseStyle.
 			PaddingRight(0).
 			Foreground(lipgloss.Color(CWDColor))
 
-	modeStyle = baseStyle.Copy().
+	modeStyle = baseStyle.
 			Align(lipgloss.Center).
 			Bold(true).
 			Background(lipgloss.Color(ModeColor))
 
-	helpMsgStyle = baseStyle.Copy().
+	helpMsgStyle = baseStyle.
 			Bold(true).
 			Foreground(lipgloss.Color(HelpMsgColor))
 )
