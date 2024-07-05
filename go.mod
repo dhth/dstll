@@ -1,6 +1,6 @@
 module github.com/dhth/dstll
 
-go 1.22.1
+go 1.22.5
 
 require (
 	github.com/BurntSushi/toml v1.4.0
@@ -8,7 +8,7 @@ require (
 	github.com/charmbracelet/bubbles v0.18.0
 	github.com/charmbracelet/bubbletea v0.26.6
 	github.com/charmbracelet/lipgloss v0.11.0
-	github.com/smacker/go-tree-sitter v0.0.0-20240614082054-0ac8d7d185ec
+	github.com/smacker/go-tree-sitter v0.0.0-20240625050157-a31a98a7c0f6
 )
 
 require (
@@ -29,6 +29,6 @@ require (
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	golang.org/x/sync v0.7.0 // indirect
-	golang.org/x/sys v0.21.0 // indirect
+	golang.org/x/sys v0.22.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 )
