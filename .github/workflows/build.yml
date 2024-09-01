@@ -37,6 +37,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
+    needs: build
     steps:
     - uses: actions/checkout@v4
     - name: Set up Go
