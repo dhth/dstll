@@ -15,7 +15,7 @@ const (
 	resultPane
 )
 
-type model struct {
+type Model struct {
 	config                Config
 	resultVP              viewport.Model
 	resultVPReady         bool
@@ -34,7 +34,7 @@ type model struct {
 	fileExplorerPaneWidth int
 }
 
-func (m model) Init() tea.Cmd {
+func (m Model) Init() tea.Cmd {
 	return tea.Batch(
 		hideHelp(time.Minute*1),
 		m.filepicker.Init(),

@@ -3,7 +3,7 @@
 Running `dstll` in the [flask][1] repo gives the following output:
 
 ```
-$ git ls-files src/flask/**/*.py | grep -v '__init__.py' | head -n 3 | dstll -plain=true
+$ dstll $(git ls-files src/flask/**/*.py | grep -v '__init__.py' | head -n 3 ) -p
 
 -> src/flask/app.py
 

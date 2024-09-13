@@ -1,8 +1,9 @@
 package tsutils
 
 import (
-	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetScalaFunctions(t *testing.T) {
@@ -98,15 +99,14 @@ override protected def method1(arg1: String, num: Int): Unit = {
 
 			got := <-resultChan
 
-			if !reflect.DeepEqual(got.Results, tt.expected) {
-				t.Errorf("got: %#v, expected: %#v", got.Results, tt.expected)
-			}
-			if got.Err != tt.err {
-				t.Errorf("error mismatch; got: %v, expected: %v", got.Err, tt.err)
+			if tt.err == nil {
+				assert.Equal(t, tt.expected, got.Results)
+				assert.NoError(t, got.Err)
+			} else {
+				assert.Equal(t, tt.err, got.Err)
 			}
 		})
 	}
-
 }
 
 func TestGetScalaClasses(t *testing.T) {
@@ -220,15 +220,14 @@ echo "hi"
 
 			got := <-resultChan
 
-			if !reflect.DeepEqual(got.Results, tt.expectedResults) {
-				t.Errorf("got: %#v, expected: %#v", got.Results, tt.expectedResults)
-			}
-			if got.Err != tt.err {
-				t.Errorf("error mismatch; got: %v, expected: %v", got.Err, tt.err)
+			if tt.err == nil {
+				assert.Equal(t, tt.expectedResults, got.Results)
+				assert.NoError(t, got.Err)
+			} else {
+				assert.Equal(t, tt.err, got.Err)
 			}
 		})
 	}
-
 }
 
 func TestGetScalaObjects(t *testing.T) {
@@ -265,13 +264,7 @@ object HelloWorld2 {
 
 			got := <-resultChan
 
-			if !reflect.DeepEqual(got.Results, tt.expected.Results) {
-				t.Errorf("got: %#v, expected: %#v", got, tt.expected)
-			}
-			if got.Err != tt.expected.Err {
-				t.Errorf("error mismatch; got: %v, expected: %v", got.Err, tt.expected.Err)
-			}
+			assert.Equal(t, tt.expected, got)
 		})
 	}
-
 }

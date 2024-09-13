@@ -3,7 +3,7 @@
 Running `dstll` in the [go][1] repo gives the following output:
 
 ```
-$ git ls-files src/io/**/*.go | grep -v '_test.go' | head -n 3 | dstll -plain=true
+$ dstll $(git ls-files src/io/**/*.go | grep -v '_test.go' | head -n 3) -p
 
 -> src/io/fs/format.go
 

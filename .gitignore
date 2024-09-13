@@ -1,5 +1,5 @@
 dstll
 .quickrun
 cosign.key
-cosign.pub
 justfile
+dstll-output

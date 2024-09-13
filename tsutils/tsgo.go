@@ -27,7 +27,6 @@ func getGoFuncs(resultChan chan<- Result, fContent []byte) {
   result: (_)? @return-type
   )
 `), tsgo.GetLanguage())
-
 	if err != nil {
 		resultChan <- Result{Err: err}
 		return
@@ -53,7 +52,7 @@ func getGoFuncs(resultChan chan<- Result, fContent []byte) {
 			fMatchedNode = capture.Node
 
 			switch fMatchedNode.Type() {
-			case "identifier":
+			case nodeTypeIdentifier:
 				fName = fMatchedNode.Content(fContent)
 			case "parameter_list":
 				fParams = fMatchedNode.Content(fContent)
@@ -85,7 +84,6 @@ func getGoTypes(resultChan chan<- Result, fContent []byte) {
 	q, err := ts.NewQuery([]byte(`
 (type_declaration) @type-dec
 `), tsgo.GetLanguage())
-
 	if err != nil {
 		resultChan <- Result{Err: err}
 		return
@@ -133,7 +131,6 @@ func getGoMethods(resultChan chan<- Result, fContent []byte) {
   result: (_)? @return-type
   )
 `), tsgo.GetLanguage())
-
 	if err != nil {
 		resultChan <- Result{Err: err}
 		return
@@ -183,5 +180,4 @@ func getGoMethods(resultChan chan<- Result, fContent []byte) {
 		elements = append(elements, elem)
 	}
 	resultChan <- Result{Results: elements}
-
 }

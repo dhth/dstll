@@ -6,14 +6,14 @@ import (
 )
 
 var (
-	FilePathIncorrectErr = errors.New("file path incorrect")
-	FileNameIncorrectErr = errors.New("file name incorrect")
+	ErrFilePathIncorrect = errors.New("file path incorrect")
+	ErrFileNameIncorrect = errors.New("file name incorrect")
 )
 
 func getFileExtension(filePath string) (FileType, error) {
 	fPathEls := strings.Split(filePath, ".")
 	if len(fPathEls) < 2 {
-		return FTNone, FilePathIncorrectErr
+		return FTNone, ErrFilePathIncorrect
 	}
 	var ft FileType
 	switch fPathEls[len(fPathEls)-1] {
@@ -24,12 +24,12 @@ func getFileExtension(filePath string) (FileType, error) {
 	case "py":
 		ft = FTPython
 	default:
-		return FTNone, FilePathIncorrectErr
+		return FTNone, ErrFilePathIncorrect
 	}
 
 	fNameEls := strings.Split(filePath, "/")
 	if strings.Split(fNameEls[len(fNameEls)-1], ".")[0] == "" {
-		return FTNone, FileNameIncorrectErr
+		return FTNone, ErrFileNameIncorrect
 	}
 
 	return ft, nil

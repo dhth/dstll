@@ -7,7 +7,7 @@
 constructs in your code files.
 
 <p align="center">
-  <img src="https://tools.dhruvs.space/images/dstll/dstll.gif" alt="Usage" />
+  <img src="https://tools.dhruvs.space/images/dstll/dstll-1.png" alt="Usage" />
 </p>
 
 Languages supported:
@@ -35,56 +35,21 @@ files, such as classes, functions, objects, etc.
 go install github.com/dhth/dstll@latest
 ```
 
-🛠️ Configuration
----
-
-Create a configuration file that looks like the following. By default,
-`dstll` will look for this file at `~/.config/dstll/dstll.yml`.
-
-```toml
-[tui]
-view_file_command = ["your", "command"]
-# for example, ["bat", "--style", "plain", "--paging", "always"]
-# will run 'bat --style plain --paging always <file-path>'
-```
-
 ⚡️ Usage
 ---
 
-`dstll` can be run in both CLI and TUI mode. The former is the default.
-
-### CLI Mode
-
-In CLI mode, `dstll` accepts a list of file paths from `stdin`.
-
 ```bash
-git ls-files | dstll
-# or
-git ls-files | dstll -plain=true
-# or
-find . -name '*.go' | dstll
-# or
-fd . --extension=scala | head -n 4 | dstll
-# or
-ls -1 | dstll
-# or
-cat <<EOF | dstll
-file1.py
-dir/file2.py
-EOF
-```
+# print findings to stdout
+dstll [PATH ...]
 
-<p align="center">
-  <img src="https://tools.dhruvs.space/images/dstll/dstll-1.png" alt="Usage" />
-</p>
+# write findings to a directory
+dstll write [PATH ...] -o /var/tmp/findings
 
-### TUI Mode
+# serve findings via a web server
+dstll serve [PATH ...] -o /var/tmp/findings
 
-In TUI mode, `dstll` allows you to manually query for constructs with the
-help of a file browser.
-
-```bash
-dstll -mode=tui
+# open TUI
+dstll tui
 ```
 
 <p align="center">
@@ -95,18 +60,21 @@ dstll -mode=tui
   <img src="https://tools.dhruvs.space/images/dstll/dstll-3.png" alt="Usage" />
 </p>
 
-### Server Mode
-
-`dstll` can present its findings via a web server which serves HTML output.
-
-```bash
-git ls-files | dstll -mode=server
-```
-
 <p align="center">
   <img src="https://tools.dhruvs.space/images/dstll/dstll-4.png" alt="Usage" />
 </p>
 
+🛠️ Configuration
+---
+
+Create a configuration file that looks like the following. By default,
+`dstll` will look for this file at `~/.config/dstll/dstll.yml`.
+
+```toml
+view-file-command = ["your", "command"]
+# for example, ["bat", "--style", "plain", "--paging", "always"]
+# will run 'bat --style plain --paging always <file-path>'
+```
 
 TODO
 ---
@@ -126,7 +94,7 @@ Examples
 Running `dstll` in the [scala][1] repo gives the following output:
 
 ```
-$ git ls-files src/compiler/scala/tools/tasty | head -n 3 | dstll
+$ dstll $(git ls-files src/compiler/scala/tools/tasty | head -n 3)
 
 👉 src/compiler/scala/tools/tasty/AttributeUnpickler.scala
 

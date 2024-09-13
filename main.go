@@ -1,9 +1,14 @@
 package main
 
 import (
+	"os"
+
 	"github.com/dhth/dstll/cmd"
 )
 
 func main() {
-	cmd.Execute()
+	err := cmd.Execute()
+	if err != nil {
+		os.Exit(1)
+	}
 }

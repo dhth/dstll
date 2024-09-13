@@ -1,9 +1,9 @@
 package tsutils
 
 import (
-	"fmt"
-	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetPyData(t *testing.T) {
@@ -59,16 +59,13 @@ def say_something(x: str, y: str) -> str:
 	for _, tt := range cases {
 		t.Run(tt.name, func(t *testing.T) {
 			got, err := getPyData(tt.fileContents)
-			fmt.Println(got)
-			fmt.Println(tt.expected)
 
-			if !reflect.DeepEqual(got, tt.expected) {
-				t.Errorf("got: %#v, expected: %#v", got, tt.expected)
-			}
-			if err != tt.err {
-				t.Errorf("error mismatch; got: %v, expected: %v", err, tt.err)
+			if tt.err == nil {
+				assert.Equal(t, tt.expected, got)
+				assert.NoError(t, err)
+			} else {
+				assert.Equal(t, tt.err, err)
 			}
 		})
 	}
-
 }

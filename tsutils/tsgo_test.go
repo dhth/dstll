@@ -1,8 +1,9 @@
 package tsutils
 
 import (
-	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetGoFuncs(t *testing.T) {
@@ -49,11 +50,11 @@ func saySomething(name string) string {
 
 			got := <-resultChan
 
-			if !reflect.DeepEqual(got.Results, tt.expectedResults) {
-				t.Errorf("got: %#v, expected: %#v", got.Results, tt.expectedResults)
-			}
-			if got.Err != tt.err {
-				t.Errorf("error mismatch; got: %v, expected: %v", got.Err, tt.err)
+			if tt.err == nil {
+				assert.Equal(t, tt.expectedResults, got.Results)
+				assert.NoError(t, got.Err)
+			} else {
+				assert.Equal(t, tt.err, got.Err)
 			}
 		})
 	}
@@ -109,15 +110,14 @@ type Shape interface {
 
 			got := <-resultChan
 
-			if !reflect.DeepEqual(got.Results, tt.expectedResults) {
-				t.Errorf("got: %#v, expected: %#v", got.Results, tt.expectedResults)
-			}
-			if got.Err != tt.err {
-				t.Errorf("error mismatch; got: %v, expected: %v", got.Err, tt.err)
+			if tt.err == nil {
+				assert.Equal(t, tt.expectedResults, got.Results)
+				assert.NoError(t, got.Err)
+			} else {
+				assert.Equal(t, tt.err, got.Err)
 			}
 		})
 	}
-
 }
 
 func TestGetGoMethods(t *testing.T) {
@@ -164,13 +164,12 @@ func (p person) saySomething(say string) string {
 
 			got := <-resultChan
 
-			if !reflect.DeepEqual(got.Results, tt.expectedResults) {
-				t.Errorf("got: %#v, expected: %#v", got.Results, tt.expectedResults)
-			}
-			if got.Err != tt.err {
-				t.Errorf("error mismatch; got: %v, expected: %v", got.Err, tt.err)
+			if tt.err == nil {
+				assert.Equal(t, tt.expectedResults, got.Results)
+				assert.NoError(t, got.Err)
+			} else {
+				assert.Equal(t, tt.err, got.Err)
 			}
 		})
 	}
-
 }

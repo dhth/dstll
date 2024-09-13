@@ -1,5 +1,11 @@
 package tsutils
 
+const (
+	nodeTypeIdentifier = "identifier"
+	nodeTypeModifiers  = "modifiers"
+	nodeTypeParameters = "parameters"
+)
+
 type Result struct {
 	FPath   string
 	Results []string

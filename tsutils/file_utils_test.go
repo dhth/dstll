@@ -1,6 +1,10 @@
 package tsutils
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func TestGetFileExtension(t *testing.T) {
 	cases := []struct {
@@ -10,57 +14,77 @@ func TestGetFileExtension(t *testing.T) {
 		err      error
 	}{
 		// SUCCESSES
-		{name: "a scala file",
+		{
+			name:     "a scala file",
 			filePath: "dir/file.scala",
-			expected: FTScala},
-		{name: "a go file",
+			expected: FTScala,
+		},
+		{
+			name:     "a go file",
 			filePath: "dir/file.go",
-			expected: FTGo},
-		{name: "a go file in a hidden directory",
+			expected: FTGo,
+		},
+		{
+			name:     "a go file in a hidden directory",
 			filePath: ".dir/file.go",
-			expected: FTGo},
+			expected: FTGo,
+		},
 
 		// FAILURES
-		{name: "an incorrect file path",
+		{
+			name:     "an incorrect file path",
 			filePath: "filewithoutextension",
 			expected: FTNone,
-			err:      FilePathIncorrectErr},
-		{name: "an incorrect file path in dir",
+			err:      ErrFilePathIncorrect,
+		},
+		{
+			name:     "an incorrect file path in dir",
 			filePath: "dir/filewithoutextension",
 			expected: FTNone,
-			err:      FilePathIncorrectErr},
-		{name: "a file with several dots",
+			err:      ErrFilePathIncorrect,
+		},
+		{
+			name:     "a file with several dots",
 			filePath: "dir/file.go.temp",
 			expected: FTNone,
-			err:      FilePathIncorrectErr},
-		{name: "a dot file",
+			err:      ErrFilePathIncorrect,
+		},
+		{
+			name:     "a dot file",
 			filePath: ".file",
 			expected: FTNone,
-			err:      FilePathIncorrectErr},
-		{name: "a file in a hidden directory",
+			err:      ErrFilePathIncorrect,
+		},
+		{
+			name:     "a file in a hidden directory",
 			filePath: ".dir/file",
 			expected: FTNone,
-			err:      FilePathIncorrectErr},
-		{name: "a go file without a name",
+			err:      ErrFilePathIncorrect,
+		},
+		{
+			name:     "a go file without a name",
 			filePath: ".go",
 			expected: FTNone,
-			err:      FileNameIncorrectErr},
-		{name: "a go file without a name in a hidden dir",
+			err:      ErrFileNameIncorrect,
+		},
+		{
+			name:     "a go file without a name in a hidden dir",
 			filePath: "dir1/.dir2/.go",
 			expected: FTNone,
-			err:      FileNameIncorrectErr},
+			err:      ErrFileNameIncorrect,
+		},
 	}
 
 	for _, tt := range cases {
 		t.Run(tt.name, func(t *testing.T) {
 			got, err := getFileExtension(tt.filePath)
-			if got != tt.expected {
-				t.Errorf("got: %v, expected: %v", got, tt.expected)
-			}
-			if err != tt.err {
-				t.Errorf("error mismatch; got: %v, expected: %v", err, tt.err)
+
+			if tt.err == nil {
+				assert.Equal(t, tt.expected, got)
+				assert.NoError(t, err)
+			} else {
+				assert.Equal(t, tt.err, err)
 			}
 		})
 	}
-
 }

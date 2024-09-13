@@ -1,0 +1,22 @@
+name: lint-yml
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "**.yml"
+  pull_request:
+    paths:
+      - "**.yml"
+
+jobs:
+  lint-yml:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install yamlfmt
+        uses: jaxxstorm/action-install-gh-release@v1.10.0
+        with:
+          repo: google/yamlfmt
+      - name: Run yamlfmt
+        run: yamlfmt -lint -quiet $(find . -name '*.yml')

@@ -2,52 +2,41 @@ package ui
 
 import (
 	"fmt"
-	"github.com/dhth/dstll/tsutils"
+	"os"
+	"path/filepath"
 	"strings"
+
+	"github.com/dhth/dstll/tsutils"
 )
 
-func ShowResults(fPaths []string, trimPrefix string, plain bool) {
+type writeResult struct {
+	path string
+	err  error
+}
 
-	resultsChan := make(chan tsutils.Result)
-	results := make(map[string][]string)
-
-	for _, fPath := range fPaths {
-		go tsutils.GetLayout(resultsChan, fPath)
-	}
-
-	for range fPaths {
-		r := <-resultsChan
-		if r.Err == nil {
-			results[r.FPath] = r.Results
-		}
-	}
-
+func ShowResults(results []tsutils.Result, trimPrefix string, plain bool) {
 	switch plain {
 	case true:
-		printPlainOutput(fPaths, results, trimPrefix)
+		printPlainOutput(results, trimPrefix)
 	case false:
-		printColorOutput(fPaths, results, trimPrefix)
+		printColorOutput(results, trimPrefix)
 	}
 }
 
-func printColorOutput(fPaths []string, results map[string][]string, trimPrefix string) {
-	for _, fPath := range fPaths {
-		v, ok := results[fPath]
-		if !ok {
+func printColorOutput(results []tsutils.Result, trimPrefix string) {
+	for _, result := range results {
+		if result.Err != nil {
 			continue
 		}
 
-		if len(v) == 0 {
-			continue
-		}
 		if trimPrefix != "" {
-			fmt.Println("👉 " + filePathStyle.Render(strings.TrimPrefix(fPath, trimPrefix)))
+			fmt.Println("👉 " + filePathStyle.Render(strings.TrimPrefix(result.FPath, trimPrefix)))
 		} else {
-			fmt.Println("👉 " + filePathStyle.Render(fPath))
+			fmt.Println("👉 " + filePathStyle.Render(result.FPath))
 		}
 		fmt.Println()
 
-		for _, elem := range v {
+		for _, elem := range result.Results {
 			fmt.Println(tsElementStyle.Render(elem))
 			fmt.Println()
 		}
@@ -56,28 +45,89 @@ func printColorOutput(fPaths []string, results map[string][]string, trimPrefix s
 	}
 }
 
-func printPlainOutput(fPaths []string, results map[string][]string, trimPrefix string) {
-	for _, fPath := range fPaths {
-		v, ok := results[fPath]
-		if !ok {
+func printPlainOutput(results []tsutils.Result, trimPrefix string) {
+	for _, result := range results {
+		if result.Err != nil {
 			continue
 		}
 
-		if len(v) == 0 {
-			continue
-		}
 		if trimPrefix != "" {
-			fmt.Println("-> " + strings.TrimPrefix(fPath, trimPrefix))
+			fmt.Println("-> " + strings.TrimPrefix(result.FPath, trimPrefix))
 		} else {
-			fmt.Println("-> " + fPath)
+			fmt.Println("-> " + result.FPath)
 		}
 		fmt.Println()
 
-		for _, elem := range v {
+		for _, elem := range result.Results {
 			fmt.Println(elem)
 			fmt.Println()
 		}
 		fmt.Print(strings.Repeat(".", 80))
 		fmt.Print("\n\n")
+	}
+}
+
+func writeToFile(resultsChan chan<- writeResult, path string, contents []string) {
+	dir := filepath.Dir(path)
+	err := os.MkdirAll(dir, 0o755)
+	if err != nil {
+		resultsChan <- writeResult{path, err}
+		return
+	}
+
+	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o644)
+	if err != nil {
+		resultsChan <- writeResult{path, err}
+		return
+	}
+	defer file.Close()
+
+	_, err = file.WriteString(strings.Join(contents, "\n") + "\n")
+	resultsChan <- writeResult{path, err}
+}
+
+func WriteResults(results []tsutils.Result, outDir string, quiet bool) {
+	resultsChan := make(chan writeResult)
+	var successes []string
+	errors := make(map[string]error)
+
+	counter := 0
+	for _, result := range results {
+		outPath := filepath.Join(outDir, result.FPath)
+		if len(result.Results) > 0 {
+			go writeToFile(resultsChan, outPath, result.Results)
+			counter++
+		}
+	}
+
+	for i := 0; i < counter; i++ {
+		r := <-resultsChan
+		if r.err != nil {
+			errors[r.path] = r.err
+		} else {
+			successes = append(successes, r.path)
+		}
+	}
+
+	errorList := make([]string, len(errors))
+	c := 0
+	for p, e := range errors {
+		errorList[c] = fmt.Sprintf("%s: %s", p, e.Error())
+		c++
+	}
+
+	if !quiet {
+		if len(successes) > 0 {
+			fmt.Printf("The following files were written:\n%s\n", strings.Join(successes, "\n"))
+		}
+	}
+
+	if len(errorList) > 0 {
+		if !quiet {
+			if len(successes) > 0 {
+				fmt.Print("\n---\n\n")
+			}
+		}
+		fmt.Fprintf(os.Stderr, "The following errors were encountered:\n%s\n", strings.Join(errorList, "\n"))
 	}
 }

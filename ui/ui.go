@@ -1,25 +1,28 @@
 package ui
 
 import (
+	"errors"
 	"fmt"
-	"log"
 	"os"
 
 	tea "github.com/charmbracelet/bubbletea"
 )
 
-func RenderUI(config Config) {
+var errFailedToConfigureDebugging = errors.New("failed to configure debugging")
 
+func RenderUI(config Config) error {
 	if len(os.Getenv("DEBUG")) > 0 {
 		f, err := tea.LogToFile("debug.log", "debug")
 		if err != nil {
-			fmt.Println("fatal:", err)
-			os.Exit(1)
+			return fmt.Errorf("%w: %s", errFailedToConfigureDebugging, err.Error())
 		}
 		defer f.Close()
 	}
+
 	p := tea.NewProgram(InitialModel(config), tea.WithAltScreen())
-	if _, err := p.Run(); err != nil {
-		log.Fatalf("Something went wrong %s", err)
+	_, err := p.Run()
+	if err != nil {
+		return err
 	}
+	return nil
 }

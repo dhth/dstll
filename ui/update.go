@@ -10,7 +10,7 @@ import (
 
 const useHighPerformanceRenderer = false
 
-func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmds []tea.Cmd
 	m.message = ""
 
@@ -28,10 +28,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.resultVP.GotoTop()
 			}
 		case "v", " ":
-			if m.config.ViewFileCmd != nil {
+			if len(m.config.ViewFileCmd) > 0 {
 				if m.activePane == fileExplorerPane {
 					if m.filepicker.IsCurrentAFile {
-						cmds = append(cmds, openFile(m.filepicker.Current, *m.config.ViewFileCmd))
+						cmds = append(cmds, openFile(m.filepicker.Current, m.config.ViewFileCmd))
 					}
 				}
 			} else {

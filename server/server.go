@@ -38,9 +38,7 @@ const (
 	activePageColor = "#f15bb5"
 )
 
-var (
-	noPortOpenErr = errors.New("No open port found")
-)
+var ErrNoPortOpen = errors.New("No open port found")
 
 //go:embed html
 var tplFolder embed.FS
@@ -58,7 +56,6 @@ type htmlData struct {
 }
 
 func serveResults(files []string) func(w http.ResponseWriter, r *http.Request) {
-
 	return func(w http.ResponseWriter, r *http.Request) {
 		page := r.PathValue("page")
 		pageNum := 1
@@ -129,7 +126,6 @@ func serveResults(files []string) func(w http.ResponseWriter, r *http.Request) {
 }
 
 func getResults(fPaths []string) map[string][]htemplate.HTML {
-
 	resultsChan := make(chan tsutils.Result)
 	results := make(map[string][]htemplate.HTML)
 
@@ -161,14 +157,12 @@ func getResults(fPaths []string) map[string][]htemplate.HTML {
 }
 
 func Start(fPaths []string) {
-
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("GET /{$}", serveResults(fPaths))
 	mux.HandleFunc("GET /page/{page}", serveResults(fPaths))
 
 	port, err := findOpenPort(startPort, endPort)
-
 	if err != nil {
 		fmt.Printf("Couldn't find an open port between %d-%d", startPort, endPort)
 	}
@@ -193,7 +187,6 @@ func Start(fPaths []string) {
 	defer shutDownRelease()
 
 	err = server.Shutdown(shutDownCtx)
-
 	if err != nil {
 		fmt.Printf("Error shutting down: %v\nTrying forceful shutdown\n", err)
 		closeErr := server.Close()
@@ -215,5 +208,5 @@ func findOpenPort(startPort, endPort int) (int, error) {
 			return port, nil
 		}
 	}
-	return 0, noPortOpenErr
+	return 0, ErrNoPortOpen
 }

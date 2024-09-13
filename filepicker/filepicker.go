@@ -196,10 +196,10 @@ func newStack() stack {
 	}
 }
 
-func (m *Model) pushView(selected, min, max int) {
+func (m *Model) pushView(selected, minItem, maxItem int) {
 	m.selectedStack.Push(selected)
-	m.minStack.Push(min)
-	m.maxStack.Push(max)
+	m.minStack.Push(minItem)
+	m.maxStack.Push(maxItem)
 }
 
 func (m *Model) popView() (int, int, int) {
@@ -255,7 +255,7 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 			break
 		}
 		m.files = msg.entries
-		m.max = max(m.max, m.Height-1)
+		m.max = maxInt(m.max, m.Height-1)
 
 		m.setCurrent()
 
@@ -440,15 +440,6 @@ func (m Model) View() string {
 	return s.String()
 }
 
-// DidSelectFile returns whether a user has selected a file (on this msg).
-func (m Model) DidSelectFile(msg tea.Msg) (bool, string) {
-	didSelect, path := m.didSelectFile(msg)
-	if didSelect && m.CanSelect(path) {
-		return true, path
-	}
-	return false, ""
-}
-
 // DidSelectDisabledFile returns whether a user tried to select a disabled file
 // (on this msg). This is necessary only if you would like to warn the user that
 // they tried to select a disabled file.
@@ -514,7 +505,7 @@ func (m Model) CanSelect(file string) bool {
 	return false
 }
 
-func max(a, b int) int {
+func maxInt(a, b int) int {
 	if a > b {
 		return a
 	}

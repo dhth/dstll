@@ -7,8 +7,7 @@ import (
 	"github.com/dhth/dstll/filepicker"
 )
 
-func InitialModel(config Config) model {
-
+func InitialModel(config Config) Model {
 	fp := filepicker.New()
 	supportedFT := []string{".go", ".scala", ".py"}
 
@@ -27,7 +26,7 @@ func InitialModel(config Config) model {
 	fp.Styles.DisabledFile = fp.Styles.DisabledFile.Foreground(lipgloss.Color(DisabledFileColor))
 	fp.Styles.Directory = fp.Styles.Directory.Foreground(lipgloss.Color(DirectoryColor))
 
-	m := model{
+	m := Model{
 		config:                config,
 		filepicker:            fp,
 		resultsCache:          make(map[string]string),

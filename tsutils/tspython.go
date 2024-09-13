@@ -25,7 +25,6 @@ func getPyData(fContent []byte) ([]string, error) {
   return_type: (_)? @return-type
   )
 `), tspy.GetLanguage())
-
 	if err != nil {
 		return nil, err
 	}
@@ -49,9 +48,9 @@ func getPyData(fContent []byte) ([]string, error) {
 			fMatchedNode = capture.Node
 
 			switch fMatchedNode.Type() {
-			case "identifier":
+			case nodeTypeIdentifier:
 				fName = fMatchedNode.Content(fContent)
-			case "parameters":
+			case nodeTypeParameters:
 				fParams = fMatchedNode.Content(fContent)
 			default:
 				// TODO: This is not the best way to get the return type; find a better way
@@ -64,5 +63,4 @@ func getPyData(fContent []byte) ([]string, error) {
 		elements = append(elements, elem)
 	}
 	return elements, nil
-
 }

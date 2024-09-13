@@ -9,7 +9,6 @@ import (
 )
 
 func getScalaClasses(resultChan chan<- Result, fContent []byte) {
-
 	parser := ts.NewParser()
 	parser.SetLanguage(tsscala.GetLanguage())
 
@@ -30,7 +29,6 @@ func getScalaClasses(resultChan chan<- Result, fContent []byte) {
   extend: (extends_clause)? @extends-clause
   )
 `), tsscala.GetLanguage())
-
 	if err != nil {
 		resultChan <- Result{Err: err}
 		return
@@ -59,9 +57,9 @@ func getScalaClasses(resultChan chan<- Result, fContent []byte) {
 			cMatchedNode = capture.Node
 
 			switch cMatchedNode.Type() {
-			case "modifiers":
+			case nodeTypeModifiers:
 				cModifiers = cMatchedNode.Content(fContent) + " "
-			case "identifier":
+			case nodeTypeIdentifier:
 				cName = cMatchedNode.Content(fContent)
 			case "type_parameters":
 				cTypeParams = cMatchedNode.Content(fContent)
@@ -79,7 +77,6 @@ func getScalaClasses(resultChan chan<- Result, fContent []byte) {
 }
 
 func getScalaObjects(resultChan chan<- Result, fContent []byte) {
-
 	parser := ts.NewParser()
 	parser.SetLanguage(tsscala.GetLanguage())
 
@@ -97,7 +94,6 @@ func getScalaObjects(resultChan chan<- Result, fContent []byte) {
   extend: (extends_clause)? @extends-clause
   )
 `), tsscala.GetLanguage())
-
 	if err != nil {
 		resultChan <- Result{Err: err}
 		return
@@ -123,7 +119,7 @@ func getScalaObjects(resultChan chan<- Result, fContent []byte) {
 			oMatchedNode = capture.Node
 
 			switch oMatchedNode.Type() {
-			case "identifier":
+			case nodeTypeIdentifier:
 				oName = oMatchedNode.Content(fContent)
 			case "extends_clause":
 				oExtendsCl = " " + oMatchedNode.Content(fContent)
@@ -181,11 +177,11 @@ func getScalaFunctions(resultChan chan<- Result, fContent []byte) {
 		for _, capture := range funcMatch.Captures {
 			fMatchedNode = capture.Node
 			switch fMatchedNode.Type() {
-			case "modifiers":
+			case nodeTypeModifiers:
 				fAccessModifier = fMatchedNode.Content(fContent) + " "
-			case "identifier":
+			case nodeTypeIdentifier:
 				fIdentifer = fMatchedNode.Content(fContent)
-			case "parameters":
+			case nodeTypeParameters:
 				fParams = fMatchedNode.Content(fContent)
 			default:
 				// TODO: This is not the best way to get the return type; find a better way
