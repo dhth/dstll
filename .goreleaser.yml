@@ -10,7 +10,7 @@ before:
 
 builds:
   - id: darwin-amd64
-    main: ./cmd/dstll
+    main: ./
     binary: dstll
     goarch:
       - amd64
@@ -23,7 +23,7 @@ builds:
       - -trimpath
 
   - id: darwin-arm64
-    main: ./cmd/dstll
+    main: ./
     binary: dstll
     goarch:
       - arm64
@@ -36,7 +36,7 @@ builds:
       - -trimpath
 
   - id: linux-amd64
-    main: ./cmd/dstll
+    main: ./
     binary: dstll
     goarch:
       - amd64
@@ -49,7 +49,7 @@ builds:
       - -trimpath
 
   - id: linux-arm64
-    main: ./cmd/dstll
+    main: ./
     binary: dstll
     goarch:
       - arm64
