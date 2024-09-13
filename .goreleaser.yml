@@ -9,14 +9,57 @@ before:
     - go generate ./...
 
 builds:
-  - env:
-      - CGO_ENABLED=0
-    goos:
-      - linux
-      - darwin
+  - id: darwin-amd64
+    main: ./cmd/dstll
+    binary: dstll
     goarch:
       - amd64
+    goos:
+      - darwin
+    env:
+      - CC=o64-clang
+      - CXX=o64-clang++
+    flags:
+      - -trimpath
+
+  - id: darwin-arm64
+    main: ./cmd/dstll
+    binary: dstll
+    goarch:
       - arm64
+    goos:
+      - darwin
+    env:
+      - CC=oa64-clang
+      - CXX=oa64-clang++
+    flags:
+      - -trimpath
+
+  - id: linux-amd64
+    main: ./cmd/dstll
+    binary: dstll
+    goarch:
+      - amd64
+    goos:
+      - linux
+    env:
+      - CC=x86_64-linux-gnu-gcc
+      - CXX=x86_64-linux-gnu-g++
+    flags:
+      - -trimpath
+
+  - id: linux-arm64
+    main: ./cmd/dstll
+    binary: dstll
+    goarch:
+      - arm64
+    goos:
+      - linux
+    env:
+      - CC=aarch64-linux-gnu-gcc
+      - CXX=aarch64-linux-gnu-g++
+    flags:
+      - -trimpath
 
 signs:
   - cmd: cosign
