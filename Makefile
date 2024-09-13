@@ -8,7 +8,7 @@ release-dry-run:
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v `pwd`:/go/src/$(PACKAGE_NAME) \
 		-w /go/src/$(PACKAGE_NAME) \
-		ghcr.io/goreleaser/goreleaser-cross:v1.20.0 \
+		ghcr.io/goreleaser/goreleaser-cross:v1.22.7 \
 	  build --clean --snapshot
 
 .PHONY: release
@@ -24,5 +24,5 @@ release:
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v `pwd`:/go/src/$(PACKAGE_NAME) \
 		-w /go/src/$(PACKAGE_NAME) \
-		ghcr.io/goreleaser/goreleaser-cross:v1.20.0 \
+		ghcr.io/goreleaser/goreleaser-cross:v1.22.7 \
 	  release --clean
