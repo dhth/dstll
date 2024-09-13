@@ -26,19 +26,8 @@ jobs:
         run: go build -v ./...
       - name: Test
         run: go test -v ./...
-      - name: Install Cosign
-        uses: sigstore/cosign-installer@v3
-        with:
-          cosign-release: 'v2.2.3'
-      - name: Store Cosign private key in a file
-        run: 'echo "$COSIGN_KEY" > cosign.key'
-        shell: bash
-        env:
-          COSIGN_KEY: ${{secrets.COSIGN_KEY}}
-      - name: Release Binaries
-        uses: goreleaser/goreleaser-action@v6
-        with:
-          version: latest
-          args: release --clean
+      - name: Release
         env:
           GITHUB_TOKEN: ${{secrets.GH_PAT}}
+        run: |
+          make release
