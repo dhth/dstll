@@ -15,7 +15,8 @@ type FileType uint
 
 const (
 	FTNone FileType = iota
-	FTScala
 	FTGo
 	FTPython
+	FTRust
+	FTScala
 )

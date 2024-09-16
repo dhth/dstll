@@ -13,8 +13,8 @@ constructs in your code files.
 Languages supported:
 
 - go
-- scala 2
 - python
+- scala 2
 - more to come
 
 Motivation

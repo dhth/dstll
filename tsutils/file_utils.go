@@ -17,12 +17,14 @@ func getFileExtension(filePath string) (FileType, error) {
 	}
 	var ft FileType
 	switch fPathEls[len(fPathEls)-1] {
-	case "scala":
-		ft = FTScala
 	case "go":
 		ft = FTGo
 	case "py":
 		ft = FTPython
+	case "rs":
+		ft = FTRust
+	case "scala":
+		ft = FTScala
 	default:
 		return FTNone, ErrFilePathIncorrect
 	}

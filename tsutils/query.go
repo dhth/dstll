@@ -17,22 +17,6 @@ func GetLayout(resultsChan chan<- Result, filePath string) {
 
 	var elements []string
 	switch ext {
-	case FTScala:
-		objectChan := make(chan Result)
-		classChan := make(chan Result)
-		fnChan := make(chan Result)
-
-		chans := []chan Result{objectChan, classChan, fnChan}
-		go getScalaObjects(objectChan, fContent)
-		go getScalaClasses(classChan, fContent)
-		go getScalaFunctions(fnChan, fContent)
-
-		for _, ch := range chans {
-			r := <-ch
-			if r.Err == nil {
-				elements = append(elements, r.Results...)
-			}
-		}
 	case FTGo:
 		typeChan := make(chan Result)
 		fnChan := make(chan Result)
@@ -51,6 +35,38 @@ func GetLayout(resultsChan chan<- Result, filePath string) {
 		}
 	case FTPython:
 		elements, err = getPyData(fContent)
+	case FTRust:
+		structChan := make(chan Result)
+		enumChan := make(chan Result)
+		fnChan := make(chan Result)
+		chans := []chan Result{structChan, enumChan, fnChan}
+
+		go getRustStructs(structChan, fContent)
+		go getRustEnums(enumChan, fContent)
+		go getRustFuncs(fnChan, fContent)
+
+		for _, ch := range chans {
+			r := <-ch
+			if r.Err == nil {
+				elements = append(elements, r.Results...)
+			}
+		}
+	case FTScala:
+		objectChan := make(chan Result)
+		classChan := make(chan Result)
+		fnChan := make(chan Result)
+
+		chans := []chan Result{objectChan, classChan, fnChan}
+		go getScalaObjects(objectChan, fContent)
+		go getScalaClasses(classChan, fContent)
+		go getScalaFunctions(fnChan, fContent)
+
+		for _, ch := range chans {
+			r := <-ch
+			if r.Err == nil {
+				elements = append(elements, r.Results...)
+			}
+		}
 	default:
 		return
 	}
