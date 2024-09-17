@@ -57,16 +57,17 @@ func getRustFuncs(resultChan chan<- Result, fContent []byte) {
 	var elements []string
 
 	for {
+		fMatch, cOk := qc.NextMatch()
+		if !cOk {
+			break
+		}
+
 		var visibilityModifier string
 		var fName string
 		var fTParams string
 		var fParams string
 		var fReturnT string
 		var fMatchedNode *ts.Node
-		fMatch, cOk := qc.NextMatch()
-		if !cOk {
-			break
-		}
 
 		for _, capture := range fMatch.Captures {
 			fMatchedNode = capture.Node

@@ -37,9 +37,24 @@ func saySomething(name string) {
 			fileContents: []byte(`
 func saySomething(name string) string {
     return fmt.Sprintf("hola, %s", name)
-}
-`),
+}`),
 			expectedResults: []string{"func saySomething(name string) string"},
+		},
+		{
+			name: "a function with multiple return type",
+			fileContents: []byte(`
+func getGenericResult(fContent []byte, query string, language *ts.Language) ([]string, error) {
+    return nil, nil
+}`),
+			expectedResults: []string{"func getGenericResult(fContent []byte, query string, language *ts.Language) ([]string, error)"},
+		},
+		{
+			name: "a function using type parameters",
+			fileContents: []byte(`
+func Clone[S ~[]E, E any](s S) S {
+    return append(s[:0:0], s...)
+}`),
+			expectedResults: []string{"func Clone[S ~[]E, E any](s S) S"},
 		},
 	}
 
@@ -133,8 +148,7 @@ func TestGetGoMethods(t *testing.T) {
 			fileContents: []byte(`
 func (p person) saySomething() {
     fmt.Printf("%s says, hola", p.name)
-}
-`),
+}`),
 			expectedResults: []string{"func (p person) saySomething()"},
 		},
 		{
@@ -142,8 +156,7 @@ func (p person) saySomething() {
 			fileContents: []byte(`
 func (p person) saySomething(say string) {
     fmt.Printf("%s says, %s", p.name, say)
-}
-`),
+}`),
 			expectedResults: []string{"func (p person) saySomething(say string)"},
 		},
 		{
@@ -151,9 +164,24 @@ func (p person) saySomething(say string) {
 			fileContents: []byte(`
 func (p person) saySomething(say string) string {
     return fmt.Sprintf("%s says %s", p.name, say)
-}
-`),
+}`),
 			expectedResults: []string{"func (p person) saySomething(say string) string"},
+		},
+		{
+			name: "a method with parameters and a multiple return type",
+			fileContents: []byte(`
+func (p person) saySomething(say string) (string, error) {
+    return fmt.Sprintf("%s says %s", p.name, say), nil
+}`),
+			expectedResults: []string{"func (p person) saySomething(say string) (string, error)"},
+		},
+		{
+			name: "a method with parameters and a return type",
+			fileContents: []byte(`
+func (s *slice[E, V]) Map(doSomething func(E) V) ([]E, error) {
+    return nil, nil
+}`),
+			expectedResults: []string{"func (s *slice[E, V]) Map(doSomething func(E) V) ([]E, error)"},
 		},
 	}
 

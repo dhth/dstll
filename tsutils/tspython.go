@@ -35,15 +35,17 @@ func getPyData(fContent []byte) ([]string, error) {
 
 	var elements []string
 
-	var fName string
-	var fParams string
-	var fReturnT string
-	var fMatchedNode *ts.Node
 	for {
 		fMatch, cOk := qc.NextMatch()
 		if !cOk {
 			break
 		}
+
+		var fName string
+		var fParams string
+		var fReturnT string
+		var fMatchedNode *ts.Node
+
 		for _, capture := range fMatch.Captures {
 			fMatchedNode = capture.Node
 
