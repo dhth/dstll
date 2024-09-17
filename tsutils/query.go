@@ -36,15 +36,11 @@ func GetLayout(resultsChan chan<- Result, filePath string) {
 	case FTPython:
 		elements, err = getPyData(fContent)
 	case FTRust:
-		structChan := make(chan Result)
-		enumChan := make(chan Result)
-		traitChan := make(chan Result)
+		typesChan := make(chan Result)
 		fnChan := make(chan Result)
-		chans := []chan Result{structChan, enumChan, traitChan, fnChan}
+		chans := []chan Result{typesChan, fnChan}
 
-		go getRustStructs(structChan, fContent)
-		go getRustEnums(enumChan, fContent)
-		go getRustTraits(traitChan, fContent)
+		go getRustTypes(typesChan, fContent)
 		go getRustFuncs(fnChan, fContent)
 
 		for _, ch := range chans {

@@ -14,18 +14,15 @@ const (
 	rustNodeTypeParameters         = "parameters"
 )
 
-func getRustStructs(resultChan chan<- Result, fContent []byte) {
-	results, err := getGenericResult(fContent, "(struct_item) @struct", tsrust.GetLanguage())
-	resultChan <- Result{Results: results, Err: err}
-}
-
-func getRustEnums(resultChan chan<- Result, fContent []byte) {
-	results, err := getGenericResult(fContent, "(enum_item) @enum", tsrust.GetLanguage())
-	resultChan <- Result{Results: results, Err: err}
-}
-
-func getRustTraits(resultChan chan<- Result, fContent []byte) {
-	results, err := getGenericResult(fContent, "(trait_item) @trait", tsrust.GetLanguage())
+func getRustTypes(resultChan chan<- Result, fContent []byte) {
+	query := `[
+  (struct_item) @struct
+  (enum_item) @enum
+  (type_item) @type_item
+  (trait_item) @trait
+  (union_item) @union
+]`
+	results, err := getGenericResult(fContent, query, tsrust.GetLanguage())
 	resultChan <- Result{Results: results, Err: err}
 }
 

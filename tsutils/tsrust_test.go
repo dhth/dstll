@@ -8,11 +8,20 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-//go:embed testcode/rust.txt
-var rustCode []byte
+var (
+	//go:embed testcode/rust/funcs.txt
+	rustCodeFuncs []byte
+	//go:embed testcode/rust/types.txt
+	rustCodeTypes []byte
+)
 
-func TestGetRustStructs(t *testing.T) {
+func TestGetRustTypes(t *testing.T) {
 	expected := []string{
+		"type MyTypeAlias = i32;",
+		`union MyUnion {
+    i: i32,
+    f: f32,
+}`,
 		"struct Empty;",
 		"struct Unit;",
 		"struct Color(i32, i32, i32);",
@@ -39,19 +48,6 @@ func TestGetRustStructs(t *testing.T) {
     x: i32,
     y: i32,
 }`,
-	}
-
-	resultChan := make(chan Result)
-	go getRustStructs(resultChan, rustCode)
-
-	got := <-resultChan
-
-	require.NoError(t, got.Err)
-	assert.Equal(t, expected, got.Results)
-}
-
-func TestGetRustEnums(t *testing.T) {
-	expected := []string{
 		`enum Direction {
     North,
     South,
@@ -92,19 +88,6 @@ func TestGetRustEnums(t *testing.T) {
     Borrowed(&'a T),
     Owned(T),
 }`,
-	}
-
-	resultChan := make(chan Result)
-	go getRustEnums(resultChan, rustCode)
-
-	got := <-resultChan
-
-	assert.Equal(t, expected, got.Results)
-	assert.NoError(t, got.Err)
-}
-
-func TestGetRustTraits(t *testing.T) {
-	expected := []string{
 		`trait Drawable {
     fn draw(&self);
 }`,
@@ -156,7 +139,7 @@ func TestGetRustTraits(t *testing.T) {
 	}
 
 	resultChan := make(chan Result)
-	go getRustTraits(resultChan, rustCode)
+	go getRustTypes(resultChan, rustCodeTypes)
 
 	got := <-resultChan
 
@@ -166,8 +149,6 @@ func TestGetRustTraits(t *testing.T) {
 
 func TestGetRustFuncs(t *testing.T) {
 	expected := []string{
-		"fn provided_method(&self)",
-		"fn provided_method2(&self)",
 		"fn function_name()",
 		"fn generic_function<T>(value: T) -> T",
 		"pub fn public_function() -> i32",
@@ -184,7 +165,7 @@ func TestGetRustFuncs(t *testing.T) {
 	}
 
 	resultChan := make(chan Result)
-	go getRustFuncs(resultChan, rustCode)
+	go getRustFuncs(resultChan, rustCodeFuncs)
 
 	got := <-resultChan
 
