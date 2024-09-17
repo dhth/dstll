@@ -14,6 +14,7 @@ Languages supported:
 
 - go
 - python
+- rust
 - scala 2
 - more to come
 
@@ -76,18 +77,6 @@ view-file-command = ["your", "command"]
 # will run 'bat --style plain --paging always <file-path>'
 ```
 
-TODO
----
-
-- go
-    - [x] Query methods
-- scala
-    - [x] Query Objects
-- python
-    - [ ] Query classes
-- [ ] JS
-- [ ] TS
-
 Examples
 ---
 
@@ -96,31 +85,11 @@ Running `dstll` in the [scala][1] repo gives the following output:
 ```
 $ dstll $(git ls-files src/compiler/scala/tools/tasty | head -n 3)
 
-👉 src/compiler/scala/tools/tasty/AttributeUnpickler.scala
-
-object AttributeUnpickler
-
-def attributes(reader: TastyReader): Attributes
-
-................................................................................
-
-👉 src/compiler/scala/tools/tasty/Attributes.scala
-
-object Attributes
-
-private class ConcreteAttributes(val isJava: Boolean) extends Attributes
-
-................................................................................
-
-👉 src/compiler/scala/tools/tasty/ErasedTypeRef.scala
+-> src/compiler/scala/tools/tasty/ErasedTypeRef.scala
 
 object ErasedTypeRef
 
 class ErasedTypeRef(qualifiedName: TypeName, arrayDims: Int)
-
-def signature: String
-
-def encode: ErasedTypeRef
 
 def apply(tname: TastyName): ErasedTypeRef
 
@@ -129,6 +98,20 @@ def name(qual: TastyName, tname: SimpleName, isModule: Boolean)
 def specialised(qual: TastyName, terminal: String, isModule: Boolean, arrayDims: Int = 0): ErasedTypeRef
 
 ................................................................................
+
+-> src/compiler/scala/tools/tasty/Attributes.scala
+
+object Attributes
+
+private class ConcreteAttributes(val isJava: Boolean) extends Attributes
+
+................................................................................
+
+-> src/compiler/scala/tools/tasty/AttributeUnpickler.scala
+
+object AttributeUnpickler
+
+def attributes(reader: TastyReader): Attributes
 ```
 
 More examples can be found [here](./examples).

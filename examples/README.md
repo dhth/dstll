@@ -5,3 +5,4 @@ of code files.
 
 - [go](./go)
 - [python](./python)
+- [rust](./rust)

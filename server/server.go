@@ -93,7 +93,7 @@ func serveResults(files []string) func(w http.ResponseWriter, r *http.Request) {
 			Results:         results,
 			Pages:           pages,
 			CurrentPage:     pageNum,
-			NumFiles:        len(files),
+			NumFiles:        len(results),
 			BackgroundColor: backgroundColor,
 			HeaderColor:     headerColor,
 			FilepathColor:   filepathColor,
@@ -136,6 +136,10 @@ func getResults(fPaths []string) map[string][]htemplate.HTML {
 	for range fPaths {
 		r := <-resultsChan
 		if r.Err != nil {
+			continue
+		}
+
+		if len(r.Results) == 0 {
 			continue
 		}
 

@@ -3,7 +3,13 @@
 Running `dstll` in the [flask][1] repo gives the following output:
 
 ```
-$ dstll $(git ls-files src/flask/**/*.py | grep -v '__init__.py' | head -n 3 ) -p
+$ dstll $(git ls-files src/flask/**/*.py | head -n 3 ) -p
+
+-> src/flask/__init__.py
+
+def __getattr__(name: str) -> t.Any
+
+................................................................................
 
 -> src/flask/app.py
 
@@ -21,7 +27,7 @@ def __init__(
         instance_path: str | None = None,
         instance_relative_config: bool = False,
         root_path: str | None = None,
-    ) -> timedelta | None
+    )
 
 def get_send_file_max_age(self, filename: str | None) -> int | None
 
@@ -128,18 +134,6 @@ def wsgi_app(
 def __call__(
         self, environ: WSGIEnvironment, start_response: StartResponse
     ) -> cabc.Iterable[bytes]
-
-................................................................................
-
--> src/flask/blueprints.py
-
-def get_send_file_max_age(self, filename: str | None) -> int | None
-
-def send_static_file(self, filename: str) -> Response
-
-def open_resource(self, resource: str, mode: str = "rb") -> t.IO[t.AnyStr]
-
-................................................................................
 ```
 
 [1]: https://github.com/pallets/flask

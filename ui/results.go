@@ -29,6 +29,10 @@ func printColorOutput(results []tsutils.Result, trimPrefix string) {
 			continue
 		}
 
+		if len(result.Results) == 0 {
+			continue
+		}
+
 		if trimPrefix != "" {
 			fmt.Println("👉 " + filePathStyle.Render(strings.TrimPrefix(result.FPath, trimPrefix)))
 		} else {
@@ -51,6 +55,10 @@ func printColorOutput(results []tsutils.Result, trimPrefix string) {
 func printPlainOutput(results []tsutils.Result, trimPrefix string) {
 	for i, result := range results {
 		if result.Err != nil {
+			continue
+		}
+
+		if len(result.Results) == 0 {
 			continue
 		}
 
@@ -95,11 +103,12 @@ func WriteResults(results []tsutils.Result, outDir string, quiet bool) {
 
 	counter := 0
 	for _, result := range results {
-		outPath := filepath.Join(outDir, result.FPath)
-		if len(result.Results) > 0 {
-			go writeToFile(resultsChan, outPath, result.Results)
-			counter++
+		if len(result.Results) == 0 {
+			continue
 		}
+		outPath := filepath.Join(outDir, result.FPath)
+		go writeToFile(resultsChan, outPath, result.Results)
+		counter++
 	}
 
 	for i := 0; i < counter; i++ {
