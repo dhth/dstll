@@ -1,0 +1,21 @@
+# ==== FUNCS ====
+
+# a function with no parameters or return type hint
+def say_something():
+    print("hola")
+
+# function with parameters but no return type hint
+def say_something(x):
+    print("hola " + x)
+
+# a function with parameters with types but no return type hint
+def say_something(x: str, y: str):
+    print(f"hola, {x} and {y}")
+
+# a function with return type hint but no parameters
+def say_something() -> str:
+    return "hola"
+
+# a function with parameters and return type hints
+def say_something(x: str, y: str) -> str:
+    return f"hola, {x} and {y}"

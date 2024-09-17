@@ -15,8 +15,6 @@ type Shape interface {
     Perimeter() float64
 }
 
-// ===============
-
 // ==== FUNCS ====
 
 // a function with no parameters
@@ -44,8 +42,6 @@ func Clone[S ~[]E, E any](s S) S {
     return append(s[:0:0], s...)
 }
 
-// ===============
-
 // === METHODS ===
 
 // a method with no parameters
@@ -72,5 +68,3 @@ func (p person) saySomething(say string) (string, error) {
 func (s *slice[E, V]) Map(doSomething func(E) V) ([]E, error) {
     return nil, nil
 }
-
-// ===============

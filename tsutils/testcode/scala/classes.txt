@@ -1,0 +1,38 @@
+// a simple class with 2 functions
+class MyClass {
+  def classMethod1(): Unit = {
+    println("Function 1")
+  }
+}
+
+// a class with modifiers
+sealed abstract class KafkaConsumer {}
+
+// a class with modifiers and type params
+sealed abstract class Signature[+T] { self =>
+  final def show: String = mergeShow(new StringBuilder(30)).toString
+}
+
+// class within a class
+class OuterClass {
+  class InnerClass {
+  }
+}
+
+// a simple class with class parameters
+class MyClass(val name: String, val age: Int) {
+  def greet(): Unit = {
+    println(s"Hello, my name is $name and I am $age years old.")
+  }
+}
+
+// a simple class with class parameters and an extends clause
+class MyExtendedClass(name: String, age: Int, val occupation: String) extends MyClass(name, age) {
+  def introduce(): Unit = {
+    println(s"I am a $occupation.")
+  }
+}
+
+class MyHealthCheck extends HealthCheck[IO]("my-health-check") {
+  override def check(): IO[HealthCheck.Result] = logger.info(l"Health Check") *> IO.pure(HealthCheck.Result.Healthy)
+}

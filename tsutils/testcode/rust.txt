@@ -1,4 +1,38 @@
-// Structs
+// ==== OTHER ====
+
+// Trait
+trait Drawable {
+    fn draw(&self); // should not match a function definition
+}
+
+// Trait with generics
+trait Resizable<T> {
+    fn resize(&mut self, value: T); // should not match a function definition
+}
+
+// Type alias
+type TableAlias = Table;
+
+// Constant
+const MAX_SIZE: usize = 100;
+
+// Static variable
+static mut COUNTER: i32 = 0;
+
+// Macro
+macro_rules! create_function {
+    ($name:ident) => {
+        fn $name() {
+            println!("You called {:?}()", stringify!($name));
+        }
+    };
+}
+
+// Using the macro to create a function
+create_function!(foo);
+
+// === STRUCTS ===
+
 struct Empty;
 struct Unit;
 struct Color(i32, i32, i32);
@@ -33,52 +67,7 @@ pub(in crate::some_module) struct Point {
     y: i32,
 }
 
-// A basic function
-fn function_name() {
-    println!("This is a basic function.");
-}
-
-// Function with generics
-fn generic_function<T>(value: T) -> T {
-    value
-}
-
-#[inline]
-pub fn public_function() -> i32 {
-    42
-}
-
-pub(crate) fn crate_function() -> i32 {
-    42
-}
-
-pub(super) fn parent_function() -> i32 {
-    42
-}
-
-pub(in crate::some_module) fn specific_module_function() -> i32 {
-    42
-}
-
-// Implementation block for the Table struct
-impl Table {
-    // Associated function
-    fn new(field1: i32, field2: String) -> Self {
-        Table { field1, field2 }
-    }
-
-    // Method with explicit lifetimes
-    fn apply_to<'a>(&'a self, data: &'a mut Table) -> &'a mut Table {
-        data.field1 += self.field1;
-        data.field2.push_str(&self.field2);
-        data
-    }
-
-    // Method
-    fn update(&mut self, field1: i32) {
-        self.field1 = field1;
-    }
-}
+// ==== ENUMS ====
 
 enum Direction {
     North,
@@ -133,14 +122,53 @@ enum RefEnum<'a, T> {
     Owned(T),
 }
 
-// Trait
-trait Drawable {
-    fn draw(&self); // should not match a function definition
+// ==== FUNCS ====
+
+// A basic function
+fn function_name() {
+    println!("This is a basic function.");
 }
 
-// Trait with generics
-trait Resizable<T> {
-    fn resize(&mut self, value: T); // should not match a function definition
+// Function with generics
+fn generic_function<T>(value: T) -> T {
+    value
+}
+
+#[inline]
+pub fn public_function() -> i32 {
+    42
+}
+
+pub(crate) fn crate_function() -> i32 {
+    42
+}
+
+pub(super) fn parent_function() -> i32 {
+    42
+}
+
+pub(in crate::some_module) fn specific_module_function() -> i32 {
+    42
+}
+
+// Implementation block for the Table struct
+impl Table {
+    // Associated function
+    fn new(field1: i32, field2: String) -> Self {
+        Table { field1, field2 }
+    }
+
+    // Method with explicit lifetimes
+    fn apply_to<'a>(&'a self, data: &'a mut Table) -> &'a mut Table {
+        data.field1 += self.field1;
+        data.field2.push_str(&self.field2);
+        data
+    }
+
+    // Method
+    fn update(&mut self, field1: i32) {
+        self.field1 = field1;
+    }
 }
 
 // Implementation of a trait for a struct
@@ -172,24 +200,3 @@ impl<T> GenericStruct<T> {
         &self.field
     }
 }
-
-// Type alias
-type TableAlias = Table;
-
-// Constant
-const MAX_SIZE: usize = 100;
-
-// Static variable
-static mut COUNTER: i32 = 0;
-
-// Macro
-macro_rules! create_function {
-    ($name:ident) => {
-        fn $name() {
-            println!("You called {:?}()", stringify!($name));
-        }
-    };
-}
-
-// Using the macro to create a function
-create_function!(foo);

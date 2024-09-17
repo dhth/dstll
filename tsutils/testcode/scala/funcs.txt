@@ -1,0 +1,40 @@
+// a simple function
+def method1(): Unit = {
+    println("Function 1")
+}
+
+// a function with arguments
+def method1(arg1: String, num: Int): Unit = {
+  for (i <- 1 to num) {
+    println(arg1)
+  }
+}
+
+// a function with override modifier
+override def method1(arg1: String, num: Int): Unit = {
+  for (i <- 1 to num) {
+    println(arg1)
+  }
+}
+
+// a function with private modifier
+private def method1(arg1: String, num: Int): Unit = {
+  for (i <- 1 to num) {
+    println(arg1)
+  }
+}
+
+// a function with two modifiers
+override protected def method1(arg1: String, num: Int): Unit = {
+  for (i <- 1 to num) {
+    println(arg1)
+  }
+}
+
+def pair[A, B](first: A, second: B): (A, B) = (first, second)
+
+def max[T <: Ordered[T]](list: List[T]): T = list.max
+
+def mapContainer[F[_], A, B](container: F[A])(func: A => B)(implicit functor: Functor[F]): F[B] = {
+  functor.map(container)(func)
+}
