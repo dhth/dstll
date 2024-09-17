@@ -1,175 +1,69 @@
 package tsutils
 
 import (
+	_ "embed"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
+//go:embed testcode/go.txt
+var goCode []byte
+
 func TestGetGoFuncs(t *testing.T) {
-	cases := []struct {
-		name            string
-		fileContents    []byte
-		expectedResults []string
-		err             error
-	}{
-		// SUCCESSES
-		{
-			name: "a function with no parameters",
-			fileContents: []byte(`
-func saySomething() {
-    fmt.Println("hola")
-}
-`),
-			expectedResults: []string{"func saySomething()"},
-		},
-		{
-			name: "a function with parameters",
-			fileContents: []byte(`
-func saySomething(name string) {
-    fmt.Printf("hola, %s", name)
-}
-`),
-			expectedResults: []string{"func saySomething(name string)"},
-		},
-		{
-			name: "a function with parameters and a return type",
-			fileContents: []byte(`
-func saySomething(name string) string {
-    return fmt.Sprintf("hola, %s", name)
-}
-`),
-			expectedResults: []string{"func saySomething(name string) string"},
-		},
+	expected := []string{
+		"func saySomething()",
+		"func saySomething(name string)",
+		"func saySomething(name string) string",
+		"func getGenericResult(fContent []byte, query string, language *ts.Language) ([]string, error)",
+		"func Clone[S ~[]E, E any](s S) S",
 	}
+	resultChan := make(chan Result)
+	go getGoFuncs(resultChan, goCode)
 
-	for _, tt := range cases {
-		t.Run(tt.name, func(t *testing.T) {
-			resultChan := make(chan Result)
-			go getGoFuncs(resultChan, tt.fileContents)
+	got := <-resultChan
 
-			got := <-resultChan
-
-			if tt.err == nil {
-				assert.Equal(t, tt.expectedResults, got.Results)
-				assert.NoError(t, got.Err)
-			} else {
-				assert.Equal(t, tt.err, got.Err)
-			}
-		})
-	}
+	require.NoError(t, got.Err)
+	assert.Equal(t, expected, got.Results)
 }
 
 func TestGetGoTypes(t *testing.T) {
-	cases := []struct {
-		name            string
-		fileContents    []byte
-		expectedResults []string
-		err             error
-	}{
-		// SUCCESSES
-		{
-			name: "a simple type",
-			fileContents: []byte(`
-type MyInt int
-`),
-			expectedResults: []string{"type MyInt int"},
-		},
-		{
-			name: "a struct",
-			fileContents: []byte(`
-type Person struct {
+	expected := []string{
+		"type MyInt int",
+		`type Person struct {
     Name string
     Age  int
-}
-`),
-			expectedResults: []string{`type Person struct {
-    Name string
-    Age  int
-}`},
-		},
-		{
-			name: "an interface",
-			fileContents: []byte(`
-type Shape interface {
+}`,
+		`type Shape interface {
     Area() float64
     Perimeter() float64
-}
-`),
-			expectedResults: []string{`type Shape interface {
-    Area() float64
-    Perimeter() float64
-}`},
-		},
+}`,
 	}
 
-	for _, tt := range cases {
-		t.Run(tt.name, func(t *testing.T) {
-			resultChan := make(chan Result)
-			go getGoTypes(resultChan, tt.fileContents)
+	resultChan := make(chan Result)
+	go getGoTypes(resultChan, goCode)
 
-			got := <-resultChan
+	got := <-resultChan
 
-			if tt.err == nil {
-				assert.Equal(t, tt.expectedResults, got.Results)
-				assert.NoError(t, got.Err)
-			} else {
-				assert.Equal(t, tt.err, got.Err)
-			}
-		})
-	}
+	require.NoError(t, got.Err)
+	assert.Equal(t, expected, got.Results)
 }
 
 func TestGetGoMethods(t *testing.T) {
-	cases := []struct {
-		name            string
-		fileContents    []byte
-		expectedResults []string
-		err             error
-	}{
-		// SUCCESSES
-		{
-			name: "a method with no parameters",
-			fileContents: []byte(`
-func (p person) saySomething() {
-    fmt.Printf("%s says, hola", p.name)
-}
-`),
-			expectedResults: []string{"func (p person) saySomething()"},
-		},
-		{
-			name: "a method with parameters",
-			fileContents: []byte(`
-func (p person) saySomething(say string) {
-    fmt.Printf("%s says, %s", p.name, say)
-}
-`),
-			expectedResults: []string{"func (p person) saySomething(say string)"},
-		},
-		{
-			name: "a method with parameters and a return type",
-			fileContents: []byte(`
-func (p person) saySomething(say string) string {
-    return fmt.Sprintf("%s says %s", p.name, say)
-}
-`),
-			expectedResults: []string{"func (p person) saySomething(say string) string"},
-		},
+	expected := []string{
+		"func (p person) saySomething()",
+		"func (p person) saySomething(say string)",
+		"func (p person) saySomething(say string) string",
+		"func (p person) saySomething(say string) (string, error)",
+		"func (s *slice[E, V]) Map(doSomething func(E) V) ([]E, error)",
 	}
 
-	for _, tt := range cases {
-		t.Run(tt.name, func(t *testing.T) {
-			resultChan := make(chan Result)
-			go getGoMethods(resultChan, tt.fileContents)
+	resultChan := make(chan Result)
+	go getGoMethods(resultChan, goCode)
 
-			got := <-resultChan
+	got := <-resultChan
 
-			if tt.err == nil {
-				assert.Equal(t, tt.expectedResults, got.Results)
-				assert.NoError(t, got.Err)
-			} else {
-				assert.Equal(t, tt.err, got.Err)
-			}
-		})
-	}
+	require.NoError(t, got.Err)
+	assert.Equal(t, expected, got.Results)
 }

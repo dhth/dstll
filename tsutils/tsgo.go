@@ -23,6 +23,7 @@ func getGoFuncs(resultChan chan<- Result, fContent []byte) {
 	q, err := ts.NewQuery([]byte(`
 (function_declaration
   name: (identifier) @name
+  type_parameters: (_)? @type-params
   parameters: (_)? @params
   result: (_)? @return-type
   )
@@ -38,31 +39,41 @@ func getGoFuncs(resultChan chan<- Result, fContent []byte) {
 
 	var elements []string
 
-	var fName string
-	var fParams string
-	var fReturnT string
-	var fMatchedNode *ts.Node
 	for {
 		fMatch, cOk := qc.NextMatch()
 		if !cOk {
 			break
 		}
 
+		var fName string
+		var fTParams string
+		var fParams string
+		var fReturnT string
+		var fMatchedNode *ts.Node
+
+		parametersSeen := false
 		for _, capture := range fMatch.Captures {
 			fMatchedNode = capture.Node
 
 			switch fMatchedNode.Type() {
 			case nodeTypeIdentifier:
 				fName = fMatchedNode.Content(fContent)
+			case "type_parameter_list":
+				fTParams = fMatchedNode.Content(fContent)
 			case "parameter_list":
-				fParams = fMatchedNode.Content(fContent)
+				if parametersSeen {
+					fReturnT = " " + fMatchedNode.Content(fContent)
+				} else {
+					fParams = fMatchedNode.Content(fContent)
+					parametersSeen = true
+				}
 			default:
 				// TODO: This is not the best way to get the return type; find a better way
 				fReturnT = " " + fMatchedNode.Content(fContent)
 			}
 		}
 
-		elem := fmt.Sprintf("func %s%s%s", fName, fParams, fReturnT)
+		elem := fmt.Sprintf("func %s%s%s%s", fName, fTParams, fParams, fReturnT)
 
 		elements = append(elements, elem)
 	}
@@ -142,20 +153,20 @@ func getGoMethods(resultChan chan<- Result, fContent []byte) {
 
 	var elements []string
 
-	var fRec string
-	var recQueried bool
-	var fName string
-	var fParams string
-	var fReturnT string
-	var fMatchedNode *ts.Node
-
 	for {
 		fMatch, cOk := qc.NextMatch()
 		if !cOk {
 			break
 		}
 
-		recQueried = false
+		var fRec string
+		var fName string
+		var fParams string
+		var fReturnT string
+		var fMatchedNode *ts.Node
+
+		receiverQueried := false
+		parametersSeen := false
 		for _, capture := range fMatch.Captures {
 			fMatchedNode = capture.Node
 
@@ -163,11 +174,14 @@ func getGoMethods(resultChan chan<- Result, fContent []byte) {
 			case "field_identifier":
 				fName = fMatchedNode.Content(fContent)
 			case "parameter_list":
-				if recQueried {
-					fParams = fMatchedNode.Content(fContent)
-				} else {
+				if !receiverQueried {
 					fRec = fMatchedNode.Content(fContent)
-					recQueried = true
+					receiverQueried = true
+				} else if !parametersSeen {
+					fParams = fMatchedNode.Content(fContent)
+					parametersSeen = true
+				} else {
+					fReturnT = " " + fMatchedNode.Content(fContent)
 				}
 			default:
 				// TODO: This is not the best way to get the return type; find a better way

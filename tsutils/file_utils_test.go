@@ -25,6 +25,11 @@ func TestGetFileExtension(t *testing.T) {
 			expected: FTGo,
 		},
 		{
+			name:     "a rust file",
+			filePath: "dir/file.rs",
+			expected: FTRust,
+		},
+		{
 			name:     "a go file in a hidden directory",
 			filePath: ".dir/file.go",
 			expected: FTGo,

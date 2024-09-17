@@ -24,7 +24,7 @@ func ShowResults(results []tsutils.Result, trimPrefix string, plain bool) {
 }
 
 func printColorOutput(results []tsutils.Result, trimPrefix string) {
-	for _, result := range results {
+	for i, result := range results {
 		if result.Err != nil {
 			continue
 		}
@@ -36,17 +36,20 @@ func printColorOutput(results []tsutils.Result, trimPrefix string) {
 		}
 		fmt.Println()
 
+		var r []string
 		for _, elem := range result.Results {
-			fmt.Println(tsElementStyle.Render(elem))
-			fmt.Println()
+			r = append(r, tsElementStyle.Render(elem))
 		}
-		fmt.Print(dividerStyle.Render(strings.Repeat(".", 80)))
-		fmt.Print("\n\n")
+		fmt.Println(strings.Join(r, "\n\n"))
+
+		if i < len(results)-1 {
+			fmt.Printf("\n%s\n\n", dividerStyle.Render(strings.Repeat(".", 80)))
+		}
 	}
 }
 
 func printPlainOutput(results []tsutils.Result, trimPrefix string) {
-	for _, result := range results {
+	for i, result := range results {
 		if result.Err != nil {
 			continue
 		}
@@ -58,12 +61,11 @@ func printPlainOutput(results []tsutils.Result, trimPrefix string) {
 		}
 		fmt.Println()
 
-		for _, elem := range result.Results {
-			fmt.Println(elem)
-			fmt.Println()
+		fmt.Println(strings.Join(result.Results, "\n\n"))
+
+		if i < len(results)-1 {
+			fmt.Printf("\n%s\n\n", strings.Repeat(".", 80))
 		}
-		fmt.Print(strings.Repeat(".", 80))
-		fmt.Print("\n\n")
 	}
 }
 

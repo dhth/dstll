@@ -1,0 +1,168 @@
+// === ALIASES ===
+
+type MyTypeAlias = i32;
+
+// === UNIONS ====
+
+union MyUnion {
+    i: i32,
+    f: f32,
+}
+
+// === STRUCTS ===
+
+struct Empty;
+struct Unit;
+struct Color(i32, i32, i32);
+
+struct Table {
+    field1: i32,
+    field2: String,
+}
+
+struct GenericStruct<T> {
+    field: T,
+}
+
+#[derive(Debug)]
+pub struct Point {
+    pub x: i32,
+    y: i32,
+}
+
+pub(crate) struct Point {
+    x: i32,
+    y: i32,
+}
+
+pub(super) struct Point {
+    x: i32,
+    y: i32,
+}
+
+pub(in crate::some_module) struct Point {
+    x: i32,
+    y: i32,
+}
+
+// ==== ENUMS ====
+
+enum Direction {
+    North,
+    South,
+    East,
+    West,
+}
+
+pub enum Option<T> {
+    Some(T),
+    None,
+}
+
+pub(crate) enum Option<T> {
+    Some(T),
+    None,
+}
+
+pub(super) enum Option<T> {
+    Some(T),
+    None,
+}
+
+pub(in crate::some_module) enum Option<T> {
+    Some(T),
+    None,
+}
+
+// Enum with Named Fields
+enum Message {
+    Quit,
+    Move { x: i32, y: i32 },
+    Write(String),
+    ChangeColor { r: u8, g: u8, b: u8 },
+}
+
+// Enum with Tuple-like Variants
+enum Result<T, E> {
+    Ok(T),
+    Err(E),
+}
+
+// Enum with Generics
+enum GenericEnum<T> {
+    Value(T),
+    Nothing,
+}
+
+// Enum with Lifetimes
+enum RefEnum<'a, T> {
+    Borrowed(&'a T),
+    Owned(T),
+}
+
+// === TRAITS ====
+
+trait Drawable {
+    fn draw(&self);
+}
+
+// Trait with generics
+trait Resizable<T> {
+    fn resize(&mut self, value: T);
+}
+
+trait BasicTrait {
+    fn required_method(&self);
+}
+
+// Trait with Associated Constants
+trait TraitWithConstants {
+    const CONSTANT: u32;
+}
+
+// Trait with Associated Types
+trait TraitWithTypes {
+    type ItemType;
+}
+
+// Trait with Provided Methods
+trait TraitWithProvidedMethods {
+    fn provided_method(&self) {
+        println!("This is a provided method.");
+    }
+}
+
+// Trait with Associated Functions
+trait TraitWithAssociatedFunctions {
+    fn associated_function() -> Self;
+}
+
+// Comprehensive Trait with All Facets
+trait ComprehensiveTrait {
+    // Associated constant
+    const CONSTANT: u32;
+
+    // Associated type
+    type ItemType;
+
+    // Required method
+    fn required_method2(&self);
+
+    // Provided method
+    fn provided_method2(&self) {
+        println!("This is a provided method.");
+    }
+
+    // Associated function
+    fn associated_function2() -> Self;
+}
+
+// Trait with Generic Parameters
+trait GenericTrait<T> {
+    fn generic_method(&self, value: T);
+}
+
+// Trait with Lifetimes
+trait LifetimeTrait<'a> {
+    fn lifetime_method(&self, value: &'a str);
+}

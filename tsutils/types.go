@@ -1,9 +1,10 @@
 package tsutils
 
 const (
-	nodeTypeIdentifier = "identifier"
-	nodeTypeModifiers  = "modifiers"
-	nodeTypeParameters = "parameters"
+	nodeTypeIdentifier     = "identifier"
+	nodeTypeModifiers      = "modifiers"
+	nodeTypeTypeParameters = "type_parameters"
+	nodeTypeParameters     = "parameters"
 )
 
 type Result struct {
@@ -15,7 +16,8 @@ type FileType uint
 
 const (
 	FTNone FileType = iota
-	FTScala
 	FTGo
 	FTPython
+	FTRust
+	FTScala
 )

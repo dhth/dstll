@@ -9,7 +9,12 @@ import (
 
 func InitialModel(config Config) Model {
 	fp := filepicker.New()
-	supportedFT := []string{".go", ".scala", ".py"}
+	supportedFT := []string{
+		".go",
+		".py",
+		".rs",
+		".scala",
+	}
 
 	unsupportedFTMsg := "dstll will show constructs for the following file types:\n"
 	for _, ft := range supportedFT {

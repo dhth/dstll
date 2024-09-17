@@ -145,13 +145,14 @@ func getScalaFunctions(resultChan chan<- Result, fContent []byte) {
 
 	rootNode := tree.RootNode()
 	funcQuery, err := ts.NewQuery([]byte(`
-	(function_definition
-     (modifiers)?  @access-modifier
-	 name: (identifier) @fname
-	 parameters: (parameters)? @fparams
-	 return_type: (_)? @return-type
-	)
-	    `), tsscala.GetLanguage())
+(function_definition
+    (modifiers)? @access-modifier
+    name: (identifier) @fname
+    type_parameters: (type_parameters)? @type-params
+    (parameters)+ @fparams
+    return_type: (_)? @return-type
+)
+`), tsscala.GetLanguage())
 	if err != nil {
 		resultChan <- Result{Err: err}
 		return
@@ -160,7 +161,6 @@ func getScalaFunctions(resultChan chan<- Result, fContent []byte) {
 
 	funcQueryCur.Exec(funcQuery, rootNode)
 
-	var fMatchedNode *ts.Node
 	var elements []string
 
 	for {
@@ -172,24 +172,28 @@ func getScalaFunctions(resultChan chan<- Result, fContent []byte) {
 
 		var fAccessModifier string
 		var fIdentifer string
+		var fTParams string
 		var fParams string
 		var fReturnType string
+
 		for _, capture := range funcMatch.Captures {
-			fMatchedNode = capture.Node
+			fMatchedNode := capture.Node
 			switch fMatchedNode.Type() {
 			case nodeTypeModifiers:
 				fAccessModifier = fMatchedNode.Content(fContent) + " "
 			case nodeTypeIdentifier:
 				fIdentifer = fMatchedNode.Content(fContent)
+			case nodeTypeTypeParameters:
+				fTParams = fMatchedNode.Content(fContent)
 			case nodeTypeParameters:
-				fParams = fMatchedNode.Content(fContent)
+				fParams += fMatchedNode.Content(fContent)
 			default:
 				// TODO: This is not the best way to get the return type; find a better way
 				fReturnType = ": " + fMatchedNode.Content(fContent)
 			}
 		}
 
-		elem := fmt.Sprintf("%sdef %s%s%s", fAccessModifier, fIdentifer, fParams, fReturnType)
+		elem := fmt.Sprintf("%sdef %s%s%s%s", fAccessModifier, fIdentifer, fTParams, fParams, fReturnType)
 		elements = append(elements, elem)
 	}
 	resultChan <- Result{Results: elements}
