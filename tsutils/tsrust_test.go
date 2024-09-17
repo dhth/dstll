@@ -103,8 +103,71 @@ func TestGetRustEnums(t *testing.T) {
 	assert.NoError(t, got.Err)
 }
 
+func TestGetRustTraits(t *testing.T) {
+	expected := []string{
+		`trait Drawable {
+    fn draw(&self);
+}`,
+		`trait Resizable<T> {
+    fn resize(&mut self, value: T);
+}`,
+		`trait BasicTrait {
+    fn required_method(&self);
+}`,
+		`trait TraitWithConstants {
+    const CONSTANT: u32;
+}`,
+		`trait TraitWithTypes {
+    type ItemType;
+}`,
+		`trait TraitWithProvidedMethods {
+    fn provided_method(&self) {
+        println!("This is a provided method.");
+    }
+}`,
+		`trait TraitWithAssociatedFunctions {
+    fn associated_function() -> Self;
+}`,
+		`trait ComprehensiveTrait {
+    // Associated constant
+    const CONSTANT: u32;
+
+    // Associated type
+    type ItemType;
+
+    // Required method
+    fn required_method2(&self);
+
+    // Provided method
+    fn provided_method2(&self) {
+        println!("This is a provided method.");
+    }
+
+    // Associated function
+    fn associated_function2() -> Self;
+}`,
+		`trait GenericTrait<T> {
+    fn generic_method(&self, value: T);
+}`,
+
+		`trait LifetimeTrait<'a> {
+    fn lifetime_method(&self, value: &'a str);
+}`,
+	}
+
+	resultChan := make(chan Result)
+	go getRustTraits(resultChan, rustCode)
+
+	got := <-resultChan
+
+	require.NoError(t, got.Err)
+	assert.Equal(t, expected, got.Results)
+}
+
 func TestGetRustFuncs(t *testing.T) {
 	expected := []string{
+		"fn provided_method(&self)",
+		"fn provided_method2(&self)",
 		"fn function_name()",
 		"fn generic_function<T>(value: T) -> T",
 		"pub fn public_function() -> i32",

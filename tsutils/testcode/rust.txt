@@ -1,15 +1,5 @@
 // ==== OTHER ====
 
-// Trait
-trait Drawable {
-    fn draw(&self); // should not match a function definition
-}
-
-// Trait with generics
-trait Resizable<T> {
-    fn resize(&mut self, value: T); // should not match a function definition
-}
-
 // Type alias
 type TableAlias = Table;
 
@@ -120,6 +110,73 @@ enum GenericEnum<T> {
 enum RefEnum<'a, T> {
     Borrowed(&'a T),
     Owned(T),
+}
+
+// === TRAITS ====
+
+trait Drawable {
+    fn draw(&self);
+}
+
+// Trait with generics
+trait Resizable<T> {
+    fn resize(&mut self, value: T);
+}
+
+trait BasicTrait {
+    fn required_method(&self);
+}
+
+// Trait with Associated Constants
+trait TraitWithConstants {
+    const CONSTANT: u32;
+}
+
+// Trait with Associated Types
+trait TraitWithTypes {
+    type ItemType;
+}
+
+// Trait with Provided Methods
+trait TraitWithProvidedMethods {
+    fn provided_method(&self) {
+        println!("This is a provided method.");
+    }
+}
+
+// Trait with Associated Functions
+trait TraitWithAssociatedFunctions {
+    fn associated_function() -> Self;
+}
+
+// Comprehensive Trait with All Facets
+trait ComprehensiveTrait {
+    // Associated constant
+    const CONSTANT: u32;
+
+    // Associated type
+    type ItemType;
+
+    // Required method
+    fn required_method2(&self);
+
+    // Provided method
+    fn provided_method2(&self) {
+        println!("This is a provided method.");
+    }
+
+    // Associated function
+    fn associated_function2() -> Self;
+}
+
+// Trait with Generic Parameters
+trait GenericTrait<T> {
+    fn generic_method(&self, value: T);
+}
+
+// Trait with Lifetimes
+trait LifetimeTrait<'a> {
+    fn lifetime_method(&self, value: &'a str);
 }
 
 // ==== FUNCS ====

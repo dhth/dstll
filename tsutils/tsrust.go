@@ -15,12 +15,17 @@ const (
 )
 
 func getRustStructs(resultChan chan<- Result, fContent []byte) {
-	results, err := getGenericResult(fContent, "((struct_item)) @struct", tsrust.GetLanguage())
+	results, err := getGenericResult(fContent, "(struct_item) @struct", tsrust.GetLanguage())
 	resultChan <- Result{Results: results, Err: err}
 }
 
 func getRustEnums(resultChan chan<- Result, fContent []byte) {
-	results, err := getGenericResult(fContent, "((enum_item) @enum)", tsrust.GetLanguage())
+	results, err := getGenericResult(fContent, "(enum_item) @enum", tsrust.GetLanguage())
+	resultChan <- Result{Results: results, Err: err}
+}
+
+func getRustTraits(resultChan chan<- Result, fContent []byte) {
+	results, err := getGenericResult(fContent, "(trait_item) @trait", tsrust.GetLanguage())
 	resultChan <- Result{Results: results, Err: err}
 }
 

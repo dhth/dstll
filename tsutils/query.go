@@ -38,11 +38,13 @@ func GetLayout(resultsChan chan<- Result, filePath string) {
 	case FTRust:
 		structChan := make(chan Result)
 		enumChan := make(chan Result)
+		traitChan := make(chan Result)
 		fnChan := make(chan Result)
-		chans := []chan Result{structChan, enumChan, fnChan}
+		chans := []chan Result{structChan, enumChan, traitChan, fnChan}
 
 		go getRustStructs(structChan, fContent)
 		go getRustEnums(enumChan, fContent)
+		go getRustTraits(traitChan, fContent)
 		go getRustFuncs(fnChan, fContent)
 
 		for _, ch := range chans {
