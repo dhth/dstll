@@ -136,37 +136,20 @@ More examples can be found [here](./examples).
 ---
 
 In case you get the `dstll` binary directly from a [release][2], you may want to
-verify its authenticity. Checksums are applied to all released artifacts, and
-the resulting checksum file is signed using
-[cosign](https://docs.sigstore.dev/cosign/installation/).
+verify its authenticity. Checksums are applied to all released artifacts. Steps
+to verify (replace `A.B.C` in the commands listed below with the version you
+want):
 
-Steps to verify (replace `A.B.C` in the commands listed below with the version
-you want):
-
-1. Download the following files from the release:
-
-   - dstll_A.B.C_checksums.txt
-   - dstll_A.B.C_checksums.txt.pem
-   - dstll_A.B.C_checksums.txt.sig
-
-2. Verify the signature:
+1. Download the checksum file and the compressed archive you want, and validate
+   its checksum:
 
    ```shell
-   cosign verify-blob dstll_A.B.C_checksums.txt \
-       --certificate dstll_A.B.C_checksums.txt.pem \
-       --signature dstll_A.B.C_checksums.txt.sig \
-       --certificate-identity-regexp 'https://github\.com/dhth/dstl/\.github/workflows/.+' \
-       --certificate-oidc-issuer "https://token.actions.githubusercontent.com"
-   ```
-
-3. Download the compressed archive you want, and validate its checksum:
-
-   ```shell
+   curl -sSLO https://github.com/dhth/dstll/releases/download/vA.B.C/dstll_A.B.C_checksums.txt
    curl -sSLO https://github.com/dhth/dstll/releases/download/vA.B.C/dstll_A.B.C_linux_amd64.tar.gz
    sha256sum --ignore-missing -c dstll_A.B.C_checksums.txt
    ```
 
-3. If checksum validation goes through, uncompress the archive:
+2. If checksum validation goes through, uncompress the archive:
 
    ```shell
    tar -xzf dstll_A.B.C_linux_amd64.tar.gz
