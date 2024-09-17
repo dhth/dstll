@@ -1,0 +1,76 @@
+// ==== TYPES ====
+
+// a simple type
+type MyInt int
+
+// a struct
+type Person struct {
+    Name string
+    Age  int
+}
+
+// an interface
+type Shape interface {
+    Area() float64
+    Perimeter() float64
+}
+
+// ===============
+
+// ==== FUNCS ====
+
+// a function with no parameters
+func saySomething() {
+    fmt.Println("hola")
+}
+
+// a function with parameters
+func saySomething(name string) {
+    fmt.Printf("hola, %s", name)
+}
+
+// a function with parameters and a return type
+func saySomething(name string) string {
+    return fmt.Sprintf("hola, %s", name)
+}
+
+// a function with multiple return type
+func getGenericResult(fContent []byte, query string, language *ts.Language) ([]string, error) {
+    return nil, nil
+}
+
+// a function using type parameters
+func Clone[S ~[]E, E any](s S) S {
+    return append(s[:0:0], s...)
+}
+
+// ===============
+
+// === METHODS ===
+
+// a method with no parameters
+func (p person) saySomething() {
+    fmt.Printf("%s says, hola", p.name)
+}
+
+// a method with parameters
+func (p person) saySomething(say string) {
+    fmt.Printf("%s says, %s", p.name, say)
+}
+
+// a method with parameters and a return type
+func (p person) saySomething(say string) string {
+    return fmt.Sprintf("%s says %s", p.name, say)
+}
+
+// a method with parameters and a multiple return type
+func (p person) saySomething(say string) (string, error) {
+    return fmt.Sprintf("%s says %s", p.name, say), nil
+}
+
+// a method with type parameters and a return type
+func (s *slice[E, V]) Map(doSomething func(E) V) ([]E, error) {
+    return nil, nil
+}
+
+// ===============

@@ -10,8 +10,6 @@ on:
       - ".goreleaser.yml"
   pull_request:
     paths:
-      - "go.*"
-      - "**/*.go"
       - ".goreleaser.yml"
 
 jobs:
