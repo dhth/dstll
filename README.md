@@ -12,10 +12,10 @@ constructs in your code files.
 
 Languages supported:
 
-- go
-- python
-- rust
-- scala 2
+- ![go](https://img.shields.io/badge/go-grey?logo=go)
+- ![python](https://img.shields.io/badge/python-grey?logo=python)
+- ![rust](https://img.shields.io/badge/rust-grey?logo=rust)
+- ![scala 2](https://img.shields.io/badge/scala-grey?logo=scala)
 - more to come
 
 Motivation
@@ -77,6 +77,13 @@ view-file-command = ["your", "command"]
 # will run 'bat --style plain --paging always <file-path>'
 ```
 
+Δ dstlled-diff
+---
+
+`dstll` can be used to generate specialized diffs that only compare changes in
+signatures of "code constructs" between two git revisions. This functionality is
+available as a Github Action via [dstlled-diff][2].
+
 Examples
 ---
 
@@ -117,3 +124,4 @@ def attributes(reader: TastyReader): Attributes
 More examples can be found [here](./examples).
 
 [1]: https://github.com/scala/scala
+[2]: https://github.com/dhth/dstlled-diff-action
