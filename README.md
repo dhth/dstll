@@ -1,7 +1,9 @@
 # dstll
 
-✨ Overview
----
+[![Build Workflow Status](https://img.shields.io/github/actions/workflow/status/dhth/dstll/build.yml?style=flat-square)](https://github.com/dhth/dstll/actions/workflows/build.yml)
+[![Vulncheck Workflow Status](https://img.shields.io/github/actions/workflow/status/dhth/dstll/vulncheck.yml?style=flat-square&label=vulncheck)](https://github.com/dhth/dstll/actions/workflows/vulncheck.yml)
+[![Latest Release](https://img.shields.io/github/release/dhth/dstll.svg?style=flat-square)](https://github.com/dhth/dstll/releases/latest)
+[![Commits Since Latest Release](https://img.shields.io/github/commits-since/dhth/dstll/latest?style=flat-square)](https://github.com/dhth/dstll/releases)
 
 `dstll` *(short for "distill")* gives you a high level overview of various
 "constructs" in your code.
