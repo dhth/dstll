@@ -2,7 +2,7 @@ package utils
 
 import "errors"
 
-var ErrPageExceedsBounds = errors.New("Page value exceeds bounds")
+var ErrPageExceedsBounds = errors.New("page value exceeds bounds")
 
 func GetIndexRange(page, total, perPage int) (int, int, error) {
 	if page < 1 {
