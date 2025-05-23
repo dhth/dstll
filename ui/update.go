@@ -8,8 +8,6 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 )
 
-const useHighPerformanceRenderer = false
-
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmds []tea.Cmd
 	m.message = ""
@@ -45,7 +43,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		if !m.resultVPReady {
 			m.resultVP = viewport.New(msg.Width-m.fileExplorerPaneWidth-10, msg.Height-8)
-			m.resultVP.HighPerformanceRendering = useHighPerformanceRenderer
 			m.resultVPReady = true
 		} else {
 			m.resultVP.Width = msg.Width - m.fileExplorerPaneWidth - 10

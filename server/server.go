@@ -38,7 +38,7 @@ const (
 	activePageColor = "#f15bb5"
 )
 
-var ErrNoPortOpen = errors.New("No open port found")
+var ErrNoPortOpen = errors.New("no open port found")
 
 //go:embed html
 var tplFolder embed.FS

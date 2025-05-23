@@ -6,13 +6,10 @@ on:
     paths:
       - "go.*"
       - "**/*.go"
-      - ".github/workflows/*.yml"
-
-permissions:
-  contents: read
+      - ".github/workflows/vulncheck.yml"
 
 env:
-  GO_VERSION: '1.23.5'
+  GO_VERSION: '1.24.3'
 
 jobs:
   vulncheck:
