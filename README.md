@@ -1,9 +1,12 @@
-# dstll
-
-[![Build Workflow Status](https://img.shields.io/github/actions/workflow/status/dhth/dstll/build.yml?style=flat-square)](https://github.com/dhth/dstll/actions/workflows/build.yml)
-[![Vulncheck Workflow Status](https://img.shields.io/github/actions/workflow/status/dhth/dstll/vulncheck.yml?style=flat-square&label=vulncheck)](https://github.com/dhth/dstll/actions/workflows/vulncheck.yml)
-[![Latest Release](https://img.shields.io/github/release/dhth/dstll.svg?style=flat-square)](https://github.com/dhth/dstll/releases/latest)
-[![Commits Since Latest Release](https://img.shields.io/github/commits-since/dhth/dstll/latest?style=flat-square)](https://github.com/dhth/dstll/releases)
+<p align="center">
+  <h1 align="center">dstll</h1>
+  <p align="center">
+    <a href="https://github.com/dhth/dstll/actions/workflows/main.yml"><img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/dhth/dstll/main.yml?style=flat-square"></a>
+    <a href="https://github.com/dhth/dstll/actions/workflows/vulncheck.yml"><img alt="Vulnerability Check" src="https://img.shields.io/github/actions/workflow/status/dhth/dstll/vulncheck.yml?style=flat-square&label=vulncheck"></a>
+    <a href="https://github.com/dhth/dstll/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/release/dhth/dstll.svg?style=flat-square"></a>
+    <a href="https://github.com/dhth/dstll/releases/latest"><img alt="Commits since latest release" src="https://img.shields.io/github/commits-since/dhth/dstll/latest?style=flat-square"></a>
+  </p>
+</p>
 
 `dstll` *(short for "distill")* gives you a high level overview of various
 "constructs" in your code.
