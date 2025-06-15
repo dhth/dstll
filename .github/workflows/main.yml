@@ -36,7 +36,7 @@ jobs:
               - ".github/actions/**"
               - ".github/workflows/pr.yml"
             release:
-              - ".goreleaser.yaml"
+              - ".goreleaser.yml"
               - ".github/workflows/pr.yml"
             workflows:
               - ".github/workflows/**.yml"
