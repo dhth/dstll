@@ -1,5 +1,5 @@
 PACKAGE_NAME := github.com/dhth/dstll
-DOCKER_IMAGE = ghcr.io/goreleaser/goreleaser-cross:v1.22.7
+DOCKER_IMAGE = ghcr.io/goreleaser/goreleaser-cross:v1.25.0
 
 .PHONY: release-dry-run
 release-dry-run:
