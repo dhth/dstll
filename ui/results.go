@@ -40,7 +40,7 @@ func printColorOutput(results []tsutils.Result, trimPrefix string) {
 		}
 		fmt.Println()
 
-		var r []string
+		r := make([]string, 0, len(result.Results))
 		for _, elem := range result.Results {
 			r = append(r, tsElementStyle.Render(elem))
 		}
