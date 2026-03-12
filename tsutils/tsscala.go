@@ -3,6 +3,7 @@ package tsutils
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	ts "github.com/smacker/go-tree-sitter"
 	tsscala "github.com/smacker/go-tree-sitter/scala"
@@ -173,7 +174,7 @@ func getScalaFunctions(resultChan chan<- Result, fContent []byte) {
 		var fAccessModifier string
 		var fIdentifer string
 		var fTParams string
-		var fParams string
+		var fParams strings.Builder
 		var fReturnType string
 
 		for _, capture := range funcMatch.Captures {
@@ -186,14 +187,14 @@ func getScalaFunctions(resultChan chan<- Result, fContent []byte) {
 			case nodeTypeTypeParameters:
 				fTParams = fMatchedNode.Content(fContent)
 			case nodeTypeParameters:
-				fParams += fMatchedNode.Content(fContent)
+				fParams.WriteString(fMatchedNode.Content(fContent))
 			default:
 				// TODO: This is not the best way to get the return type; find a better way
 				fReturnType = ": " + fMatchedNode.Content(fContent)
 			}
 		}
 
-		elem := fmt.Sprintf("%sdef %s%s%s%s", fAccessModifier, fIdentifer, fTParams, fParams, fReturnType)
+		elem := fmt.Sprintf("%sdef %s%s%s%s", fAccessModifier, fIdentifer, fTParams, fParams.String(), fReturnType)
 		elements = append(elements, elem)
 	}
 	resultChan <- Result{Results: elements}

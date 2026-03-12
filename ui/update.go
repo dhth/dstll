@@ -2,6 +2,7 @@ package ui
 
 import (
 	"bytes"
+	"strings"
 
 	"github.com/alecthomas/chroma/quick"
 	"github.com/charmbracelet/bubbles/viewport"
@@ -64,19 +65,20 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.resultVP.SetContent(m.noConstructsMsg)
 				m.resultsCache[msg.result.FPath] = m.noConstructsMsg
 			} else {
-				s := "👉 " + filePathStyleTUI.Render(msg.result.FPath) + "\n\n"
+				var s strings.Builder
+				s.WriteString("👉 " + filePathStyleTUI.Render(msg.result.FPath) + "\n\n")
 				for _, elem := range msg.result.Results {
 					var b bytes.Buffer
 					err := quick.Highlight(&b, elem, msg.result.FPath, "terminal16m", "xcode-dark")
 					if err != nil {
-						s += tsElementStyle.Render(elem)
+						s.WriteString(tsElementStyle.Render(elem))
 					} else {
-						s += b.String()
+						s.WriteString(b.String())
 					}
-					s += "\n\n"
+					s.WriteString("\n\n")
 				}
-				m.resultVP.SetContent(s)
-				m.resultsCache[msg.result.FPath] = s
+				m.resultVP.SetContent(s.String())
+				m.resultsCache[msg.result.FPath] = s.String()
 			}
 		}
 	}

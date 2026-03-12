@@ -2,6 +2,7 @@ package ui
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/dhth/dstll/filepicker"
@@ -16,9 +17,10 @@ func InitialModel(config Config) Model {
 		".scala",
 	}
 
-	unsupportedFTMsg := "dstll will show constructs for the following file types:\n"
+	var unsupportedFTMsg strings.Builder
+	unsupportedFTMsg.WriteString("dstll will show constructs for the following file types:\n")
 	for _, ft := range supportedFT {
-		unsupportedFTMsg += fmt.Sprintf("%s\n", ft)
+		unsupportedFTMsg.WriteString(fmt.Sprintf("%s\n", ft))
 	}
 
 	fpWidth := 40
@@ -37,7 +39,7 @@ func InitialModel(config Config) Model {
 		resultsCache:          make(map[string]string),
 		noConstructsMsg:       "No constructs found",
 		supportedFileTypes:    supportedFT,
-		unsupportedFileMsg:    unsupportedFTMsg,
+		unsupportedFileMsg:    unsupportedFTMsg.String(),
 		fileExplorerPaneWidth: fpWidth,
 		showHelp:              true,
 	}
