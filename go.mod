@@ -1,6 +1,6 @@
 module github.com/dhth/dstll
 
-go 1.26.1
+go 1.26.2
 
 require (
 	github.com/alecthomas/chroma v0.10.0

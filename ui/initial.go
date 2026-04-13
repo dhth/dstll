@@ -20,7 +20,7 @@ func InitialModel(config Config) Model {
 	var unsupportedFTMsg strings.Builder
 	unsupportedFTMsg.WriteString("dstll will show constructs for the following file types:\n")
 	for _, ft := range supportedFT {
-		unsupportedFTMsg.WriteString(fmt.Sprintf("%s\n", ft))
+		fmt.Fprintf(&unsupportedFTMsg, "%s\n", ft)
 	}
 
 	fpWidth := 40
